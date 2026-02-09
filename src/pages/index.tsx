@@ -69,7 +69,7 @@ export default function Home() {
               </li>
             </ul>
           </div>
-        {/* Image ChatBot */}
+          {/* Image ChatBot */}
           <Image 
           src="/memoire_chatbot.png" 
           alt="Description de l'image" 
