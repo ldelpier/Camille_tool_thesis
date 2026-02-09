@@ -5,7 +5,7 @@
   font-family: monospace;
 }
 
-/* Sidebar */
+/* Barre latérale */
 .sidebar {
   width: 12.5rem;
   background: #f5f5f0;
@@ -28,7 +28,7 @@
   margin-bottom: 1rem;
 }
 
-.sidebarmenu button {
+.sidebarmenu button, .backButton{
   background: none;
   color: #26A300;
   border: 0.09rem solid #26A300;
@@ -46,7 +46,8 @@
 .sidebarmenu button:hover {
   transform: scale(1.05);
 }
-/* Chat area */
+
+/* Zone conversation */
 .chatArea {
   flex: 1;
   display: flex;

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Chat.module.css";
 
 type Message = {
@@ -27,7 +29,14 @@ export default function ChatPage() {
 
   return (
     <div className={styles.container}>
-      {/* Sidebar */}
+      {/*C'est ce qui se trouve dans l'onglet*/}
+        <Head>
+          <title>Name of the tool</title>
+          <meta name="description" content="Tool description" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" /> {/*Il faudra penser à changer l'icon */}
+        </Head>
+      {/* Barre latéral */}
       <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.closed : ""}`}>
         <button className={styles.toggleBtn} onClick={() => setSidebarOpen(!sidebarOpen)}>
           ☰
@@ -40,9 +49,14 @@ export default function ChatPage() {
             <button>Settings</button>
           </div>
         )}
+        
+        {/* Retour vers home */}
+        <Link href="/">
+          <button className={styles.backButton}>Back to Home</button>
+        </Link>
       </aside>
 
-      {/* Chat area */}
+      {/* zone conversation */}
       <main className={styles.chatArea}>
         <div className={styles.messages}>
           {messages.map((msg, index) => (
