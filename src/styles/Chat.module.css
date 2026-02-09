@@ -7,17 +7,17 @@
 
 /* Sidebar */
 .sidebar {
-  width: 200px;
+  width: 12.5rem;
   background: #f5f5f0;
   padding: 1rem;
   transition: width 0.3s ease;
   margin-left: 1rem;
-  border-right: 3px solid #ddd;
+  border-right: 0.2rem solid #ddd;
   overflow: hidden;
 }
 
 .closed {
-  width: 60px;
+  width: 3.8rem;
 }
 
 .toggleBtn {
@@ -31,14 +31,16 @@
 .sidebarmenu button {
   background: none;
   color: #26A300;
-  border: 1px solid #26A300;
+  border: 0.09rem solid #26A300;
   padding: 0.6rem;
   margin-bottom: 0.6rem;
   cursor: pointer;
   text-align: left;
-  border-radius: 6px;
+  border-radius: 0.4rem;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  align-items: center;
 }
 
 .sidebarmenu button:hover {
@@ -61,20 +63,20 @@
 /* Message styles */
 .userMessage {
   align-self: flex-end;
-  background: #d1f5d3;
+  background: #7fc365;
   padding: 0.8rem 1.2rem;
-  border-radius: 12px;
+  border-radius: 0.8rem;
   margin-bottom: 1rem;
-  max-width: 60%;
+  max-width: 80%;
 }
 
 .aiMessage {
   align-self: flex-start;
-  background: #eaeaea;
+  background: #c8c8c4;
   padding: 0.8rem 1.2rem;
-  border-radius: 12px;
+  border-radius: 0.8rem;
   margin-bottom: 1rem;
-  max-width: 60%;
+  max-width: 80%;
   margin-left: 10%;
 }
 
@@ -82,15 +84,15 @@
 .inputArea {
   display: flex;
   padding: 1rem;
-  border-top: 2px solid #ccc;
   background: #f5f5f0;
+  margin-bottom: 1rem;
 }
 
 .inputArea input {
   flex: 1;
   padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 0.06rem solid #ccc;
+  border-radius: 0.4rem;
   outline: none;
 }
 
@@ -100,7 +102,7 @@
   background: #26A300;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.4rem;
   cursor: pointer;
 }
 .inputArea button:hover {
@@ -110,12 +112,19 @@
 /* Large screens 2560x1440 */
 @media (min-width: 2000px) {
   .sidebar {
-    width: 300px;
+    width: 18.5rem;
     overflow: hidden;
   }
 
   .closed {
-  width: 80px;
+  width: 5rem;
+  }
+
+  .sidebarmenu button {
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    width: 70%;
+    align-items: center;
   }
 
   .messages {
