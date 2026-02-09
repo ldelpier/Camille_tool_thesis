@@ -1,0 +1,130 @@
+.container {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f5f0;
+  font-family: monospace;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: #f5f5f0;
+  padding: 1rem;
+  transition: width 0.3s ease;
+  margin-left: 1rem;
+  border-right: 3px solid #ddd;
+  overflow: hidden;
+}
+
+.closed {
+  width: 60px;
+}
+
+.toggleBtn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.sidebarmenu button {
+  background: none;
+  color: #26A300;
+  border: 1px solid #26A300;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarmenu button:hover {
+  transform: scale(1.05);
+}
+/* Chat area */
+.chatArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Message styles */
+.userMessage {
+  align-self: flex-end;
+  background: #d1f5d3;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  max-width: 60%;
+}
+
+.aiMessage {
+  align-self: flex-start;
+  background: #eaeaea;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  max-width: 60%;
+  margin-left: 10%;
+}
+
+/* Input */
+.inputArea {
+  display: flex;
+  padding: 1rem;
+  border-top: 2px solid #ccc;
+  background: #f5f5f0;
+}
+
+.inputArea input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.inputArea button {
+  margin-left: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: #26A300;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.inputArea button:hover {
+    transform: scale(1.05);
+}
+
+/* Large screens 2560x1440 */
+@media (min-width: 2000px) {
+  .sidebar {
+    width: 300px;
+    overflow: hidden;
+  }
+
+  .closed {
+  width: 80px;
+  }
+
+  .messages {
+    padding: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .inputArea input {
+    font-size: 1.1rem;
+  }
+}
+
