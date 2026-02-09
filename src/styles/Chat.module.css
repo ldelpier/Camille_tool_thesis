@@ -121,7 +121,7 @@
   width: 5rem;
   }
 
-  .sidebarmenu button {
+  .sidebarmenu button, .backButton {
     padding: 0.8rem;
     font-size: 1.1rem;
     width: 70%;

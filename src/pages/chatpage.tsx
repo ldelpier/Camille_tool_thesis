@@ -31,7 +31,7 @@ export default function ChatPage() {
     <div className={styles.container}>
       {/*C'est ce qui se trouve dans l'onglet*/}
         <Head>
-          <title>Name of the tool</title>
+          <title>CHAT modify</title>
           <meta name="description" content="Tool description" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" /> {/*Il faudra penser à changer l'icon */}
@@ -51,7 +51,7 @@ export default function ChatPage() {
         )}
         
         {/* Retour vers home */}
-        <Link href="/">
+        <Link href="/" style={{textDecoration: 'none'}}>
           <button className={styles.backButton}>Back to Home</button>
         </Link>
       </aside>
