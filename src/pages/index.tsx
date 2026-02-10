@@ -1,9 +1,20 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 
 export default function Home() {
+  const[project, setProject] = useState("");
+  const router = useRouter();
+  
+  const handleStart = () => {
+    if (!project.trim()) return;
+    router.push({
+      pathname: "/chatpage",
+      query: { firstMessage: project },
+    });
+  }
   return (
     <>
       {/*C'est ce qui se trouve dans l'onglet*/}
@@ -36,16 +47,17 @@ export default function Home() {
             type="text"
             placeholder="Give your project"
             className={styles.input}
+            value={project}
+            onChange={(e) => setProject(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleStart()}
           />
-          <Link href="/chatpage">
-            <button className={styles.uploadButton}>
+            <button className={styles.uploadButton} onClick={handleStart}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 16 16 12 12 8" />
                 <line x1="8" y1="12" x2="16" y2="12" />
               </svg>
             </button>
-          </Link>
         </div>
         <div className={styles.mainContent}>
           {/* Les critères */}

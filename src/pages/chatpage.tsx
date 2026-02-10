@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Chat.module.css";
@@ -9,9 +11,22 @@ type Message = {
 };
 
 export default function ChatPage() {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    const { firstMessage } = router.query;
+    if (typeof firstMessage === "string" && firstMessage.trim()) {
+      const userMessage: Message = { role: "user", content: firstMessage };
+      const aiMessage: Message = {
+        role: "ai",
+        content: "This is a placeholder response from the AI. It will be replaced with actual answers in the future.",
+      };
+      setMessages([userMessage, aiMessage]);
+    }
+  }, [router.query]);
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -32,9 +47,7 @@ export default function ChatPage() {
       {/*C'est ce qui se trouve dans l'onglet*/}
         <Head>
           <title>CHAT modify</title>
-          <meta name="description" content="Tool description" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" /> {/*Il faudra penser à changer l'icon */}
+          {/*Il faudra penser à mettre une icon */}
         </Head>
       {/* Barre latéral */}
       <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.closed : ""}`}>
@@ -49,11 +62,13 @@ export default function ChatPage() {
             <button>Settings</button>
           </div>
         )}
-        
+
         {/* Retour vers home */}
-        <Link href="/" style={{textDecoration: 'none'}}>
-          <button className={styles.backButton}>Back to Home</button>
-        </Link>
+        {sidebarOpen && (
+          <Link href="/" style={{textDecoration: 'none'}}>
+            <button className={styles.backButton}>Back to Home</button>
+          </Link>
+        )}
       </aside>
 
       {/* zone conversation */}
