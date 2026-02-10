@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Chat.module.css";
@@ -9,24 +7,30 @@ type Message = {
   role: "user" | "ai";
   content: string;
 };
+type ChatPageProps = {
+  firstMessage?: string;
+};
 
-export default function ChatPage() {
-  const router = useRouter();
+// Pour l'optimisation du site et pour récupérer le message de la page d'accueil et l'afficher dans le chatbot
+// Nous faisons cela en utilisant getServerSideProps pour récupérer les données à chaque requête, ce qui est nécessaire pour afficher le message initial dans le chatbot.Et ça remplace le useEffect qui faisait la même chose.
+export async function getServerSideProps(context: any) {
+  const { firstMessage } = context.query;
+  return {
+    props: { 
+      firstMessage: firstMessage || "" 
+    },
+  };
+}
+
+export default function ChatPage({ firstMessage }: ChatPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(
+    firstMessage ? [
+      { role: "user", content: firstMessage },
+      { role: "ai", content: "This is a placeholder response from the AI. It will be replaced with actual answers in the future." }
+    ] : []
+  );
   const [input, setInput] = useState("");
-
-  useEffect(() => {
-    const { firstMessage } = router.query;
-    if (typeof firstMessage === "string" && firstMessage.trim()) {
-      const userMessage: Message = { role: "user", content: firstMessage };
-      const aiMessage: Message = {
-        role: "ai",
-        content: "This is a placeholder response from the AI. It will be replaced with actual answers in the future.",
-      };
-      setMessages([userMessage, aiMessage]);
-    }
-  }, [router.query]);
 
   const sendMessage = () => {
     if (!input.trim()) return;
