@@ -153,10 +153,21 @@
   margin-bottom: 1.3rem;
   }
 
+  .inputSection {
+  display: flex;
+  gap: 0.6rem;
+  width: 50%;
+  margin-top: 8rem;
+  margin-left: 37rem;
+  margin-right: 10rem;
+  margin-bottom: 3rem;
+}
+
   .mainContent {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.7fr 1fr;
   align-items: center;
+  margin-top: 8rem;
   }
   
   .criteriaSection {
