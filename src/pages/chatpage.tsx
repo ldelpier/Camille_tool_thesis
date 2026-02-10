@@ -42,6 +42,11 @@ export default function ChatPage() {
     setInput("");
   };
 
+  const startNewDiscussion = () => {
+    setMessages([]);
+    setInput("");
+  };
+
   return (
     <div className={styles.container}>
       {/*C'est ce qui se trouve dans l'onglet*/}
@@ -57,7 +62,7 @@ export default function ChatPage() {
 
         {sidebarOpen && (
           <div className={styles.sidebarmenu}>
-            <button>New discussion</button>
+            <button onClick={startNewDiscussion}>New discussion</button>
             <button>Archives</button>
             <button>Settings</button>
           </div>
