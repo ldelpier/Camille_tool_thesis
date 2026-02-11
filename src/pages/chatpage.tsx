@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "../styles/Chat.module.css";
@@ -32,17 +32,49 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
   );
   const [input, setInput] = useState("");
 
-  const sendMessage = () => {
+  // Pour savoir si le premier message a été envoyé ou pas
+  const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false);
+
+  // useEffet envoie le firstMessage à l'API chat dés que la page se charge
+  useEffect(() => {
+    if (firstMessage && !hasSentFirstMessage) {
+      sendMessage(firstMessage, true);
+      setHasSentFirstMessage(true);
+    }
+  }, [firstMessage, hasSentFirstMessage]);
+
+  const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
+    const text = messageToSent || input;
     if (!input.trim()) return;
 
-    const userMessage: Message = { role: "user", content: input };
+    if (!isFirstMessage) {
+      const userMessage: Message = { role: "user", content: text };
+      setMessages((prev) => [...prev, userMessage]);
+    }
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    })
+
+    const data = await response.json();
 
     const aiMessage: Message = {
       role: "ai",
-      content: "This is a placeholder response from the AI. It will be replaced with actual answers in the future.",
+      content: data.reply || "No response from AI.",
     };
 
-    setMessages((prev) => [...prev, userMessage, aiMessage]);
+    setMessages((prev) => {
+      if (isFirstMessage){
+        return [
+          prev[0], // le message de l'utilisateur
+          aiMessage, // la réponse de l'IA
+        ];
+      }
+      return [...prev, aiMessage];
+    });
+
     setInput("");
   };
 
@@ -101,7 +133,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
-          <button onClick={sendMessage}>➤</button>
+          <button onClick={() => sendMessage()}>➤</button>
         </div>
       </main>
     </div>

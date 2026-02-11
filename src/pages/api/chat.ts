@@ -20,7 +20,7 @@ export default async function handler(
         }
         // Ici, vous pouvez intégrer votre logique pour générer une réponse basée sur le message de l'utilisateur.
         // Par exemple, vous pourriez appeler une API d'IA ou utiliser une bibliothèque de traitement du langage naturel.
-        const aiReply = `You said: ${message}`; // Placeholder response de l'IA 
+        const aiReply = `This is where the AI would generate a response based on the user's message: "${message}"`; // la ligne ressemblera a ça une fois que l'IA sera intégrée : const response = await fetch("https://api.openai.com/...", {...}); avec cl" API dans un .env.local
 
         res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
 
