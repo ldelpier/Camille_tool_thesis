@@ -27,7 +27,7 @@
 
 /* Section titre*/
 .sectionTitle {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   color: #26A300;
   font-weight: bold;
   margin-bottom: 1.3rem;
@@ -42,7 +42,7 @@
 }
 
 .explanationText {
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1.5rem;
   color: #000;
   text-align: justify;
@@ -53,7 +53,7 @@
   display: flex;
   gap: 0.6rem;
   width: 50%;
-  margin-top: 3rem;
+  margin-top: 4rem;
   margin-left: 20rem;
   margin-right: 10rem;
   margin-bottom: 3rem;
@@ -135,7 +135,7 @@
 
 
 /* Responsive */
-@media (max-width: 2560px) {
+@media (min-width: 1537px) {
     .page {
     padding: 2.5rem 1.8rem;
   }
