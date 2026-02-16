@@ -45,7 +45,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
 
   const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
     const text = messageToSent || input;
-    if (!input.trim()) return;
+    if (!text.trim()) return;
 
     if (!isFirstMessage) {
       const userMessage: Message = { role: "user", content: text };
@@ -56,7 +56,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: text }),
-    })
+    });
 
     const data = await response.json();
 
@@ -68,7 +68,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     setMessages((prev) => {
       if (isFirstMessage){
         return [
-          prev[0], // le message de l'utilisateur
+          {role: "user", content: text}, 
           aiMessage, // la réponse de l'IA
         ];
       }

@@ -18,9 +18,52 @@ export default async function handler(
         if (!message || typeof message !== "string") {
             return res.status(400).json({ reply: "Invalid message" });
         }
-        // Ici, vous pouvez intégrer votre logique pour générer une réponse basée sur le message de l'utilisateur.
-        // Par exemple, vous pourriez appeler une API d'IA ou utiliser une bibliothèque de traitement du langage naturel.
-        const aiReply = `This is where the AI would generate a response based on the user's message: "${message}"`; // la ligne ressemblera a ça une fois que l'IA sera intégrée : const response = await fetch("https://api.openai.com/...", {...}); avec clé API dans un .env.local
+
+        // Prompt système pour guider l'IA à répondre de manière pertinente et concise
+        const systemPrompt = `
+            You are an expert developer in open source project documentation, particularly README.md and CONTRIBUTING.md documentation.
+            Your mission is to help new developers onboard into open source projects by analyzing the documentation provided by the user and checking whether it meets the following criteria depending on the type of documentation (README.md or CONTRIBUTING.md):
+            Criteria for README.md:
+                1. The purpose of the project
+                2. Explanation of the code structure
+                3. An overview of the code structure and architecture
+                4. The main characteristics of the project
+                5. An understanding of the community and its practices
+                6. A description of the practices, techniques, methods, and technologies used
+            Criteria for CONTRIBUTING.md:
+                1. Steps to contribute
+                2. Tasks suitable for newcomers
+                3. Explanation of how to submit a change
+                4. Information about the code, tests, and database
+                5. Source information to get started with the project
+                6. The code of conduct for contributors
+            If a point is missing or incomplete, indicate it clearly.
+            You must always answer in English, even if the question is in another language. 
+            Format of the response is a structured markdown file as follows:
+                - ✅ Points present
+                - ❌ Points missing
+                - ✏️ Suggestions for improvement
+        `;
+        // Appel à OpenRouter 
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${process.env.LLM_KEY}`,
+                "Content-Type": "application/json", 
+            },
+            body: JSON.stringify({
+                model: "aurora-alpha", 
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    { role: "user", content: message }
+                ],
+            })
+        });
+
+        const data = await response.json();
+
+        // Extraire la réponse de l'IA
+        const aiReply = data.choices?.[0]?.message?.content || "No response from AI."; // Si choices existe, prends l’élément 0, si message existe, prends content, sinon retourne undefined sans planter.
 
         res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
 
