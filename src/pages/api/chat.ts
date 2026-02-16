@@ -23,6 +23,7 @@ export default async function handler(
         const systemPrompt = `
             You are an expert developer in open source project documentation, particularly README.md and CONTRIBUTING.md documentation.
             Your mission is to help new developers onboard into open source projects by analyzing the documentation provided by the user and checking whether it meets the following criteria depending on the type of documentation (README.md or CONTRIBUTING.md):
+            For that you will receive the link of the project and you have to find and analyze the README.md and CONTRIBUTING.md files of the project and check if they meet the following criteria:
             Criteria for README.md:
                 1. The purpose of the project
                 2. Explanation of the code structure
@@ -44,26 +45,27 @@ export default async function handler(
                 - ❌ Points missing
                 - ✏️ Suggestions for improvement
         `;
-        // Appel à OpenRouter 
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        // Appel à Ollama (gratuit, local)
+        const response = await fetch("http://localhost:11434/api/chat", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.LLM_KEY}`,
                 "Content-Type": "application/json", 
             },
             body: JSON.stringify({
-                model: "aurora-alpha", 
+                model: "phi", // Vous pouvez changer pour: neural-chat, mistral, etc.
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: message }
                 ],
+                stream: false,
             })
         });
 
         const data = await response.json();
 
-        // Extraire la réponse de l'IA
-        const aiReply = data.choices?.[0]?.message?.content || "No response from AI."; // Si choices existe, prends l’élément 0, si message existe, prends content, sinon retourne undefined sans planter.
+        // Extraire la réponse de l'IA (format Ollama)
+        const aiReply = data.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon message par défaut
+        console.log("AI Reply:", aiReply);
 
         res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
 

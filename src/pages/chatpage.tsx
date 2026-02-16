@@ -27,7 +27,6 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
   const [messages, setMessages] = useState<Message[]>(
     firstMessage ? [
       { role: "user", content: firstMessage },
-      { role: "ai", content: "This is a placeholder response from the AI. It will be replaced with actual answers in the future." }
     ] : []
   );
   const [input, setInput] = useState("");
