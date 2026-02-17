@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import styles from "../styles/Chat.module.css";
 
 type Message = {
@@ -115,11 +116,10 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       <main className={styles.chatArea}>
         <div className={styles.messages}>
           {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={msg.role === "user" ? styles.userMessage : styles.aiMessage}
-            >
-              {msg.content}
+            <div key={index} className={msg.role === "user" ? styles.userMessage : styles.aiMessage}>
+              {msg.role === "ai" ? (<ReactMarkdown>{msg.content}</ReactMarkdown>) : 
+              ( <p>{msg.content}</p>
+              )}
             </div>
           ))}
         </div>
