@@ -55,7 +55,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text }),
+      body: JSON.stringify({message: text}),
     });
 
     const data = await response.json();

@@ -1,4 +1,3 @@
-// Je veux afficher sur cette page en grand comme quoi la page n'est pas encore disponible et que c'est en cours de développement, et que le lien vers le chatbot est dans la page d'accueil
 import Head from "next/head";
 import Link from "next/link";
 

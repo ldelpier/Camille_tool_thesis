@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import db from "../../lib/db";
 
 type Data = {
     reply: string;
@@ -111,6 +112,10 @@ export default async function handler(
         // Extraire la réponse de l'IA (format Ollama)
         const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
         console.log("AI Reply:", aiReply);
+
+        // Enregistrer la conversation dans la base de données
+        db.prepare("INSERT INTO conversations (role, content) VALUES (?, ?)").run("user", message);
+        db.prepare("INSERT INTO conversations (role, content) VALUES (?, ?)").run("ai", aiReply);
 
         res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
 
