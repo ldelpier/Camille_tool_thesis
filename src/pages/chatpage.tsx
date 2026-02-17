@@ -99,8 +99,12 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
         {sidebarOpen && (
           <div className={styles.sidebarmenu}>
             <button onClick={startNewDiscussion}>New discussion</button>
-            <button>Archives</button>
-            <button>Settings</button>
+            <Link href="/history" style={{textDecoration: 'none'}}>
+              <button>Archives</button>
+            </Link>
+            <Link href="/settings" style={{textDecoration: 'none'}}>
+              <button>Settings</button>
+            </Link>
           </div>
         )}
 
