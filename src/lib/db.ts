@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 
-const db = new Database("data/conversations.db");
+const db = new Database("conversations.db");
 
 // Création de la table "conversations" si elle n'existe pas déjà
 db.prepare(`

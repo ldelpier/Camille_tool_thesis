@@ -84,7 +84,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.containerChat}>
       {/*C'est ce qui se trouve dans l'onglet*/}
         <Head>
           <title>CHAT modify</title>
