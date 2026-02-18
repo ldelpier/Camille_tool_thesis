@@ -3,6 +3,7 @@ import db from "../../lib/db";
 
 type Data = {
     reply: string;
+    conversationId?: number; // Ajout de l'ID de la conversation dans la réponse
 };
 
 export default async function handler(
@@ -14,7 +15,7 @@ export default async function handler(
         return res.status(405).json({ reply: "Method Not Allowed" });
     }
     try {
-        const { message } = req.body; // Récupérer le message de l'utilisateur
+        const { message, conversationId: clientConversationId } = req.body; // Récupérer le message de l'utilisateur
 
         if (!message || typeof message !== "string") {
             return res.status(400).json({ reply: "Invalid message" });
@@ -111,17 +112,23 @@ export default async function handler(
 
         // Extraire la réponse de l'IA (format Ollama)
         const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
-        console.log("AI Reply:", aiReply);
 
-        // Récupérer le dernier conversation ID pour lier les messages de l'utilisateur et de l'IA
-        const lastConversation = db.prepare("SELECT MAX(conversation_id) as max FROM conversations").get() as { max: number } | undefined;
-        const conversationId = (lastConversation?.max || 0) + 1; // Si aucune conversation, commencer à 1
+        let conversationId: number;
 
-        // Enregistrer la conversation dans la base de données
+        if (clientConversationId) {
+            // Réutiliser l'ID existant
+            conversationId = clientConversationId;
+        } else {
+            // Créer un nouvel ID seulement pour la première fois
+            const lastConversation = db.prepare("SELECT MAX(conversation_id) as max FROM conversations").get() as { max: number } | undefined;
+            conversationId = (lastConversation?.max || 0) + 1;
+        }
+
+        // Enregistrer les messages avec le même conversationId
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "User", message);
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "AI", aiReply);
 
-        res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
+        res.status(200).json({ reply: aiReply, conversationId }); // Réponse de l'IA au format JSON à ma question
 
     } catch (error) {
         console.error("AI error", error);

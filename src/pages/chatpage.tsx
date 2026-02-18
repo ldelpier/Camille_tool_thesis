@@ -25,6 +25,7 @@ export async function getServerSideProps(context: any) {
 
 export default function ChatPage({ firstMessage }: ChatPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [conversationId, setConversationId] = useState<number | null>(null);
   const [messages, setMessages] = useState<Message[]>(
     firstMessage ? [
       { role: "user", content: firstMessage },
@@ -55,10 +56,18 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({message: text}),
+      body: JSON.stringify({
+        message: text,
+        conversationId: conversationId,
+      }),
     });
 
     const data = await response.json();
+
+    // Récupère l'Id de la conversation renvoyé par l'API
+    if (data.conversationId && !conversationId) {
+      setConversationId(data.conversationId);
+    }
 
     const aiMessage: Message = {
       role: "ai",
