@@ -23,6 +23,24 @@ export default function History() {
     return groups;
   }, {});
 
+  const deleteHistory = async () => {
+    if (!confirm("Are you sure you want to delete the conversation history? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      const response = await fetch("/api/history", {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        setConversations([]);
+      } else {
+        console.error("Failed to delete history");
+      }
+    } catch (error) {
+      console.error("Error deleting history:", error);
+    }
+  };
+
   useEffect(() => {
     // Fetch la conversation depuis l'API history
     const fetchConversations = async () => {
@@ -49,6 +67,7 @@ export default function History() {
         <Link href="/chatpage" style={{textDecoration: 'none'}}>
           <button className={styles.chatButton}>Conversation</button>
         </Link>
+        <button className={styles.deleteButton} onClick={deleteHistory}>Delete history</button>
         {Object.values(groupedConversations).map((group: Conversation[], index) => (
           <div key={index} className={styles.conversationItem}>
             {group.map((conv) => (
