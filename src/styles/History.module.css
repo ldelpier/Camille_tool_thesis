@@ -1,36 +1,45 @@
-.title {
+.historyArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleHisto {
   font-size: 3rem;
   color: #26A300;
   text-align: center;
   font-weight: normal;
   letter-spacing: 0.5rem;
-  margin-bottom: 3rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
   font-family: 'Courier New', monospace;
 }
 
 .conversationItem {
-  padding: 12px;
-  margin-bottom: 12px;
+  border: 0.15rem solid #7fc365;
   border-radius: 8px;
-  max-width: 80%;
-  line-height: 1.4;
+  padding: 12px;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 12px;
 }
 
-/* message user */
-.userMessage {
-  background-color: #e3f2fd;
-  align-self: flex-start;
-  border-left: 4px solid #2196f3;
-}
-
-/* message AI */
-.aiMessage {
-  background-color: #f3e5f5;
-  align-self: flex-end;
-  border-left: 4px solid #9c27b0;
-}
-
-.historyArea {
+.chatButton {
+  background: none;
+  font-size: 1rem;
+  color: #26A300;
+  border: 0.1rem solid #26A300;
+  padding: 0.4rem;;
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
   display: flex;
   flex-direction: column;
+  width: 9%;
+  align-items: center;
 }
+
+.chatButton:hover {
+  transform: scale(1.05);
+} 
+

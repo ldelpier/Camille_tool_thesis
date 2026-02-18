@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/History.module.css";
 
 type Conversation = {
   id: number;
-  role: "user" | "ai";
+  conversation_id: number;
+  role: "User" | "AI";
   content: string;
   created_at: string;
 };
 
 export default function History() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+
+  // Grouper les conversations par conversation_id pour les afficher par conversation
+  const groupedConversations = conversations.reduce<Record<number, Conversation[]>>((groups, conv) => {
+    if (!groups[conv.conversation_id]) {
+      groups[conv.conversation_id] = [];
+    }
+    groups[conv.conversation_id].push(conv);
+    return groups;
+  }, {});
 
   useEffect(() => {
     // Fetch la conversation depuis l'API history
@@ -23,7 +34,6 @@ export default function History() {
         console.error("Error fetching conversations:", error);
       }
     };
-
     fetchConversations();
   }, []);
 
@@ -35,13 +45,18 @@ export default function History() {
         {/*Il faudra penser à mettre une icon */}
       </Head>
       <main className={styles.historyArea}>
-        <h1 className={styles.title}>Conversation History</h1>
-        {conversations.map((conv) => (
-          <div key={conv.id} className={`${styles.conversationItem} ${
-          conv.role === "user" ? styles.userMessage : styles.aiMessage
-          }`}>
-            <strong>{conv.role === "user" ? "User" : "AI"}:</strong> 
-            <p>{conv.content}</p>
+        <h1 className={styles.titleHisto}>Conversation History</h1>
+        <Link href="/chatpage" style={{textDecoration: 'none'}}>
+          <button className={styles.chatButton}>Conversation</button>
+        </Link>
+        {Object.values(groupedConversations).map((group: Conversation[], index) => (
+          <div key={index} className={styles.conversationItem}>
+            {group.map((conv) => (
+              <div key={conv.id}>
+                <strong>{conv.role}:</strong> 
+                <p>{conv.content}</p>
+              </div>
+            ))}
           </div>
         ))}
       </main>

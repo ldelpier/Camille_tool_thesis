@@ -91,7 +91,7 @@ export default async function handler(
             ${responseTemplate}
         `;}
         ;
-        // Appel à Ollama (gratuit, local)
+        // Appel à Ollama
         const response = await fetch("http://localhost:11434/api/chat", {
             method: "POST",
             headers: {
@@ -113,9 +113,13 @@ export default async function handler(
         const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
         console.log("AI Reply:", aiReply);
 
+        // Récupérer le dernier conversation ID pour lier les messages de l'utilisateur et de l'IA
+        const lastConversation = db.prepare("SELECT MAX(conversation_id) as max FROM conversations").get() as { max: number } | undefined;
+        const conversationId = (lastConversation?.max || 0) + 1; // Si aucune conversation, commencer à 1
+
         // Enregistrer la conversation dans la base de données
-        db.prepare("INSERT INTO conversations (role, content) VALUES (?, ?)").run("user", message);
-        db.prepare("INSERT INTO conversations (role, content) VALUES (?, ?)").run("ai", aiReply);
+        db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "User", message);
+        db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "AI", aiReply);
 
         res.status(200).json({ reply: aiReply }); // Réponse de l'IA au format JSON à ma question
 

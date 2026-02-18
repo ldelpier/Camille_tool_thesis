@@ -34,7 +34,7 @@ export default function Home() {
 
       <div className={styles.page}>
         {/* Titre */}
-        <h1 className={styles.title}>NAME OF THE TOOL</h1>
+        <h1 className={styles.titleHome}>NAME OF THE TOOL</h1>
         
           {/* Expplication - Left side */}
           <div className={styles.explanationSection}>
