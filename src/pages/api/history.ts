@@ -11,7 +11,7 @@ type Data = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
     try {
-        const rows_conversations = db.prepare("SELECT * FROM conversations ORDER BY conversation_id DESC, created_at DESC").all();
+        const rows_conversations = db.prepare("SELECT * FROM conversations ORDER BY conversation_id DESC, created_at ASC").all();
         return res.status(200).json({ conversations: rows_conversations });
     } catch (error) {
         console.error("Error fetching conversations:", error);
