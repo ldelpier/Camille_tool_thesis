@@ -1,5 +1,4 @@
 import db from "@/lib/db";
-import e from "express";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {

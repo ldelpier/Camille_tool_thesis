@@ -3,11 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import styles from "../styles/Chat.module.css";
+import { useConversation, Message } from "../context/conversationContext";
 
-type Message = {
-  role: "user" | "ai";
-  content: string;
-};
+
 type ChatPageProps = {
   firstMessage?: string;
 };
@@ -17,53 +15,41 @@ type ChatPageProps = {
 export async function getServerSideProps(context: any) {
   const { firstMessage } = context.query;
   return {
-    props: { 
-      firstMessage: firstMessage || "" 
-    },
+    props: {firstMessage: firstMessage || "" },
   };
 }
 
 export default function ChatPage({ firstMessage }: ChatPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [conversationId, setConversationId] = useState<number | null>(null);
-  const [messages, setMessages] = useState<Message[]>(
-    firstMessage ? [
-      { role: "user", content: firstMessage },
-    ] : []
-  );
   const [input, setInput] = useState("");
+  const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false); // Pour savoir si le premier message a été envoyé ou pas
+  const {messages, setMessages, conversationId, setConversationId, resetConversation} = useConversation();
 
-  // Pour savoir si le premier message a été envoyé ou pas
-  const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false);
-
-  // useEffet envoie le firstMessage à l'API chat dés que la page se charge
+  // Envoyer fistMessage seulement s'il n'y a pas de conversation en cours en utilisant useEffet
   useEffect(() => {
-    if (firstMessage && !hasSentFirstMessage) {
+    if (firstMessage && !hasSentFirstMessage && messages.length === 0) {
       sendMessage(firstMessage, true);
       setHasSentFirstMessage(true);
     }
-  }, [firstMessage, hasSentFirstMessage]);
+  }, [firstMessage, hasSentFirstMessage, messages]);
 
+  // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA
   const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
     const text = messageToSent || input;
     if (!text.trim()) return;
 
     if (!isFirstMessage) {
       const userMessage: Message = { role: "user", content: text };
-      setMessages((prev) => [...prev, userMessage]);
+      setMessages((prev: Message[]) => [...prev, userMessage]);
     }
 
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: text,
-        conversationId: conversationId,
-      }),
+      body: JSON.stringify({message: text, conversationId}),
     });
 
     const data = await response.json();
-
     // Récupère l'Id de la conversation renvoyé par l'API
     if (data.conversationId && !conversationId) {
       setConversationId(data.conversationId);
@@ -74,7 +60,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       content: data.reply || "No response from AI.",
     };
 
-    setMessages((prev) => {
+    setMessages((prev: Message[]) => {
       if (isFirstMessage){
         return [
           {role: "user", content: text}, 
@@ -84,11 +70,6 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       return [...prev, aiMessage];
     });
 
-    setInput("");
-  };
-
-  const startNewDiscussion = () => {
-    setMessages([]);
     setInput("");
   };
 
@@ -107,7 +88,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
 
         {sidebarOpen && (
           <div className={styles.sidebarmenu}>
-            <button onClick={startNewDiscussion}>New discussion</button>
+            <button onClick={resetConversation}>New discussion</button>
             <Link href="/history" style={{textDecoration: 'none'}}>
               <button>Archives</button>
             </Link>
