@@ -1,7 +1,13 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
-## Getting Started
-
+## Purpose of the project 
+master thesis 
+## Explanation of the code structure 
+pages 
+api 
+## Overview of the architecture 
+what i put there ? 
+## Getting started 
 First, run the development server:
 
 ```bash
@@ -15,6 +21,15 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Main characteristics of the project 
+LLM 
+blabla 
+## Community and contribution practices 
+agile 
+## Practices, techniques, methods, and technologies used 
+... 
+
+
 
 <!--## The routes do not exist yet (work in progress)
 
