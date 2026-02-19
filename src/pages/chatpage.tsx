@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -20,6 +21,7 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function ChatPage({ firstMessage }: ChatPageProps) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [input, setInput] = useState("");
   const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false); // Pour savoir si le premier message a été envoyé ou pas
@@ -32,6 +34,16 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       setHasSentFirstMessage(true);
     }
   }, [firstMessage, hasSentFirstMessage, messages]);
+
+  // Détecter la source de la navigation pour savoir si l'utilisateur vient de la page home
+  useEffect(() => {
+    if (firstMessage) {
+      // Nouvelle conversation, on reset tout
+      resetConversation();
+      sendMessage(firstMessage, true);
+      setHasSentFirstMessage(true);
+    }
+  }, [firstMessage]);
 
   // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA
   const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
