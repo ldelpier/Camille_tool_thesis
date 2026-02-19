@@ -64,10 +64,12 @@ export default function History() {
       </Head>
       <main className={styles.historyArea}>
         <h1 className={styles.titleHisto}>Conversation History</h1>
-        <Link href="/chatpage" style={{textDecoration: 'none'}}>
-          <button className={styles.chatButton}>Conversation</button>
-        </Link>
-        <button className={styles.deleteButton} onClick={deleteHistory}>Delete history</button>
+        <div className={styles.buttonContainerHisto}>
+          <Link href="/chatpage" style={{textDecoration: 'none'}}>
+            <button className={styles.chatButton}>Conversation</button>
+          </Link>
+          <button className={styles.deleteButton} onClick={deleteHistory}>Delete history</button>
+        </div>
         {Object.values(groupedConversations).map((group: Conversation[], index) => (
           <div key={index} className={styles.conversationItem}>
             {group.map((conv) => (

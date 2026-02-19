@@ -23,6 +23,15 @@
   margin-bottom: 12px;
 }
 
+.buttoncontainerHisto {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1.5rem;
+}
 .chatButton {
   background: none;
   font-size: 1rem;
@@ -44,15 +53,21 @@
 } 
 
 .deleteButton {
-  background-color: #e53935;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  background: none;
+  font-size: 1rem;
+  color: #e53935;
+  border: 0.1rem solid #e53935;
+  padding: 0.4rem;
+  margin-left: 88%;
+  margin-bottom: 1.5rem;
+  border-radius: 0.4rem;
   cursor: pointer;
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 9%;
+  align-items: center;
 }
 
 .deleteButton:hover {
-  background-color: #c62828;
+   transform: scale(1.05);
 }

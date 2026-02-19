@@ -83,7 +83,7 @@ export default async function handler(
         // DOCUMENTATION prompt
         } else {
             systemPrompt = `You are an expert in open-source documentation analysis.
-            Your task is to analyze the CONTRIBUTING.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
+            Your task is to analyze the documentation files of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
             Criteria:
                 1. The project has a clear and concise README.md file that provides an overview of the project, its purpose, and how to get started.
                 2. The project has a CONTRIBUTING.md file that outlines the guidelines for contributing to the project, including how to submit issues and pull requests.
