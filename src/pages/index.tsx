@@ -29,12 +29,12 @@ export default function Home() {
         <title>Camille</title>
         <meta name="description" content="Tool description" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/rabbitkiki" />
+        <link rel="icon" href="/rabbitkiki.ico" />
       </Head>
 
       <div className={styles.page}>
         {/* Titre */}
-        <h1 className={styles.titleHome}>NAME OF THE TOOL</h1>
+        <h1 className={styles.titleHome}>CAMILLE</h1>
         
           {/* Expplication - Left side */}
           <div className={styles.explanationSection}>

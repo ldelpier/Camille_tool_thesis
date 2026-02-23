@@ -60,7 +60,7 @@ export default function History() {
       {/*C'est ce qui se trouve dans l'onglet*/}
       <Head>
         <title>Camille-History</title>
-        <link rel="icon" href="/rabbitkiki" />
+        <link rel="icon" href="/rabbitkiki.ico" />
       </Head>
       <main className={styles.historyArea}>
         <h1 className={styles.titleHisto}>Conversation History</h1>

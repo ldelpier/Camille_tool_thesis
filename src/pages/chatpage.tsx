@@ -97,7 +97,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       {/*C'est ce qui se trouve dans l'onglet*/}
         <Head>
           <title>Camille-Chatbot</title>
-          <link rel="icon" href="/rabbitkiki" />
+          <link rel="icon" href="/rabbitkiki.ico" />
         </Head>
       {/* Barre latéral */}
       <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.closed : ""}`}>

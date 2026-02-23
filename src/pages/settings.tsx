@@ -8,7 +8,7 @@ export default function History() {
         <title>Camille-Settings</title>
         <meta name="description" content="Settings page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/rabbitkiki" />
+        <link rel="icon" href="/rabbitkiki.ico" />
       </Head>
         <main style={{ padding: "2rem", textAlign: "center" }}>
             <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>This page is under construction 🚧</h1>
