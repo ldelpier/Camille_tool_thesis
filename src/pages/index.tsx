@@ -26,10 +26,10 @@ export default function Home() {
     <>
       {/*C'est ce qui se trouve dans l'onglet*/}
       <Head>
-        <title>Name of the tool</title>
+        <title>Camille</title>
         <meta name="description" content="Tool description" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" /> {/*Il faudra penser à changer l'icon */}
+        <link rel="icon" href="/rabbitkiki" />
       </Head>
 
       <div className={styles.page}>

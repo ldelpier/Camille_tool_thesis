@@ -96,8 +96,8 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     <div className={styles.containerChat}>
       {/*C'est ce qui se trouve dans l'onglet*/}
         <Head>
-          <title>CHAT modify</title>
-          {/*Il faudra penser à mettre une icon */}
+          <title>Camille-Chatbot</title>
+          <link rel="icon" href="/rabbitkiki" />
         </Head>
       {/* Barre latéral */}
       <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.closed : ""}`}>

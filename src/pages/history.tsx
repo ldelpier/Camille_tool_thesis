@@ -59,8 +59,8 @@ export default function History() {
     <div className={styles.containerHistory}>
       {/*C'est ce qui se trouve dans l'onglet*/}
       <Head>
-        <title>History</title>
-        {/*Il faudra penser à mettre une icon */}
+        <title>Camille-History</title>
+        <link rel="icon" href="/rabbitkiki" />
       </Head>
       <main className={styles.historyArea}>
         <h1 className={styles.titleHisto}>Conversation History</h1>

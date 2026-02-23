@@ -5,10 +5,10 @@ export default function History() {
   return (
     <>
       <Head>
-        <title>History</title>
-        <meta name="description" content="History page" />
+        <title>Camille-Settings</title>
+        <meta name="description" content="Settings page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/rabbitkiki" />
       </Head>
         <main style={{ padding: "2rem", textAlign: "center" }}>
             <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>This page is under construction 🚧</h1>
