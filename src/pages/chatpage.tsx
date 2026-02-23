@@ -5,6 +5,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import styles from "../styles/Chat.module.css";
 import { useConversation, Message } from "../context/conversationContext";
+import LoadingBar from "../components/loadingBar";
 
 
 type ChatPageProps = {
@@ -24,6 +25,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false); // Pour savoir si le premier message a été envoyé ou pas
   const {messages, setMessages, conversationId, setConversationId, resetConversation} = useConversation();
 
@@ -47,6 +49,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
 
   // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA
   const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
+    setIsLoading(true);
     const text = messageToSent || input;
     if (!text.trim()) return;
 
@@ -81,8 +84,8 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       }
       return [...prev, aiMessage];
     });
-
     setInput("");
+    setIsLoading(false);
   };
 
   return (
@@ -128,6 +131,8 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
               )}
             </div>
           ))}
+          {isLoading && <LoadingBar />}
+          {!isLoading && <p>{messages.length} messages affichés</p>}
         </div>
 
         <div className={styles.inputArea}>
