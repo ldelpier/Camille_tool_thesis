@@ -105,6 +105,7 @@ export default async function handler(
                     { role: "user", content: message }
                 ],
                 stream: false,
+                temperature: 0,
             })
         });
 
