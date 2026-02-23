@@ -1,5 +1,5 @@
 # Camille
-## ![alt text](image.png) Overview 
+## ![Rabbitkiki](image.png) Overview 
 Camille is a web site designed to help Open Source community. In this repository, you will find a tool that can help you write documentation for OS projects. 
 Discover it and make it your own! 
 
