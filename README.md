@@ -1,12 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Camille
+## ![alt text](image.png) Overview 
+Camille is a web site designed to help Open Source community. In this repository, you will find a tool that can help you write documentation for OS projects. 
+Discover it and make it your own! 
 
-## Purpose of the project 
-master thesis 
-## Explanation of the code structure 
-pages 
-api 
-## Overview of the architecture 
+## 📚 Content
+This is the content of README.md
+- **`Purpose of the project`**
+- **`Explanation of the code structure`**
+- **`Overview of the architecture`**
+- **`Getting started`**
+
+## 🧭 Purpose of the project 
+This project is being carried out as part of a university thesis. It aims to assist the open source community with the documentation. Documentation is often overlooked in open source projects, yet it is an important part of the project. It enables new developers to join the project efficiently, but also help mainteners to maintain it. 
+The tool we have designed is meant to facilitate the process of writing README and CONTRIBUTING files by explicitly flagging missing information based on criteria found in the literature and providing some recommendations. 
+The tool uses LLM model, so there may be hallucinations and the answers may not be 100% correct 😅.
+
+## 👩‍🏫 Explanation of the code structure 
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app). It uses the **Next.js Page Router**, which is based on a file-system routing mechanism: each file inside the `pages/` directory automatically becomes a route in the application. For example, `pages/index.tsx` maps to `/`, and files inside `pages/api/` are treated as API endpoints instead of frontend pages.
+The project is organized into the following main directories:
+### `public/`
+Contains static assets such as images in various formats. Files in this directory are served directly at the root path. 
+### `src/`
+This is the main source folder of the project. It contains four subdirectories:
+- **`data/`**
+    Contains the conversation database (data storage for chat history).
+- **`lib/`**
+    Contains the database initialization.
+- **`pages/`**
+    This is the core of the application when using the Next.js Page Router. It contains both frontend pages and backend API routes:
+    - **`pages/api/`**
+        Contains API routes:
+        - The **chat.ts**, which connects the frontend to the LLM model and manages conversation history.
+        - The **history.ts**, which allows you to retrieve and manage stored conversations.
+    - Other files in `pages/` define the frontend of the website:
+        - `index.tsx` — Home page (`/`)
+        - `chatpage.tsx` — Chat interface page, accessible after sending a message from the home page
+        - `history.tsx` — Conversation history (archive) page
+        - `setting.tsx` — Settings page (not yet implemented)
+        - `_app.tsx` — Custom App component (used to initialize pages)
+        - `_document.tsx` — Custom Document component (used to extend the HTML document structure)
+- **`styles/`**
+    contains the global style of the application and the style of the index, chatpage, history pages. 
+
+## 🗼Overview of the architecture 
 what i put there ? 
+
 ## Getting started 
 First, run the development server:
 
@@ -28,7 +66,6 @@ blabla
 agile 
 ## Practices, techniques, methods, and technologies used 
 ... 
-
 
 
 <!--## The routes do not exist yet (work in progress)
