@@ -1,5 +1,5 @@
 # Camille
-## ![Rabbitkiki](image.png) Overview 
+## 📽️ Overview 
 Camille is a web site designed to help Open Source community. In this repository, you will find a tool that can help you write documentation for OS projects. 
 Discover it and make it your own! 
 
@@ -17,6 +17,10 @@ The tool uses LLM model, so there may be hallucinations and the answers may not 
 
 ## 👩‍🏫 Explanation of the code structure 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app). It uses the **Next.js Page Router**, which is based on a file-system routing mechanism: each file inside the `pages/` directory automatically becomes a route in the application. For example, `pages/index.tsx` maps to `/`, and files inside `pages/api/` are treated as API endpoints instead of frontend pages.
+To learn more about Next.js, take a look at the following resources:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+
 The project is organized into the following main directories:
 ### `public/`
 Contains static assets such as images in various formats. Files in this directory are served directly at the root path. 
@@ -45,7 +49,7 @@ This is the main source folder of the project. It contains four subdirectories:
 ## 🗼Overview of the architecture 
 what i put there ? 
 
-## Getting started 
+## 🎬 Getting started 
 First, run the development server:
 
 ```bash
@@ -59,13 +63,22 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-## Main characteristics of the project 
-LLM 
-blabla 
-## Community and contribution practices 
-agile 
-## Practices, techniques, methods, and technologies used 
-... 
+
+## 🎖️ Main characteristics of the project 
+As mentioned above, this projects uses LLMs. To do this, we use Ollama with the Mistral model. This model can of course be changed if it no longer meets our requirements.  
+Another important point concerns the documentation : we focus on README and CONTRIBUTING files from open source projects on GitHub, but we can extend this to other types of documentation.
+
+## 👥 Community and contribution practices 
+The administrators of this project is Louise Delpierre (for the moment). 
+Any contribution is welcome if it is made with respect and a desire to help, rather than to judge and criticise. 
+If you want to contribute by improving or adding something to this project, please go check `CONTRIBUTING.md`
+
+## ✒️ Practices, techniques, methods, and technologies used 
+Currently, I don't know what to say about practice, techniques, methods, and so on. However, I can say this : make the best we can, the smallest change is a change and a great start to begin. Document what you make for you and for others so try to explain like you have to explain to a child of 7 year 😉. 
+About the technologies used here, we use the framework "Next.js" and we also use SQLite for the database. The languages are :   
+- javascript (typescript)
+- css (manually so no framework)
+
 
 
 <!--## The routes do not exist yet (work in progress)
@@ -78,10 +91,7 @@ This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-appl
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
