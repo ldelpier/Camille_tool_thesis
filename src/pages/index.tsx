@@ -26,15 +26,15 @@ export default function Home() {
     <>
       {/*C'est ce qui se trouve dans l'onglet*/}
       <Head>
-        <title>Name of the tool</title>
+        <title>Camille</title>
         <meta name="description" content="Tool description" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" /> {/*Il faudra penser à changer l'icon */}
+        <link rel="icon" href="/rabbitkiki.ico" />
       </Head>
 
       <div className={styles.page}>
         {/* Titre */}
-        <h1 className={styles.titleHome}>NAME OF THE TOOL</h1>
+        <h1 className={styles.titleHome}>CAMILLE</h1>
         
           {/* Expplication - Left side */}
           <div className={styles.explanationSection}>
