@@ -77,6 +77,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     });
 
     const data = await response.json();
+    console.log("API response :", data);
     // Récupère l'Id de la conversation renvoyé par l'API
     if (data.conversationId && !conversationId) {
       setConversationId(data.conversationId);
@@ -145,8 +146,8 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
                   {/* Afficher les quick replies si elles existent */}
                   {msg.quickReplies && msg.quickReplies.length > 0 && (
                     <div className={styles.quickReplies}>
-                      {msg.quickReplies.map((qr, qrIndex) => (
-                        <button key={qrIndex} className={styles.quickReplyButton} onClick={() => handleQuickReply(qr)}>
+                      {msg.quickReplies.map((qr, i) => (
+                        <button key={i} className={styles.quickReplyButton} onClick={() => handleQuickReply(qr)}>
                           {qr.label}
                         </button>
                       ))}

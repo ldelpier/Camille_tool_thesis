@@ -4,6 +4,7 @@ import db from "../../lib/db";
 type Data = {
     reply: string;
     conversationId?: number; // Ajout de l'ID de la conversation dans la réponse
+    quickReplies?: QuickReply[];
 };
 type QuickReply = {
     label: string;
@@ -44,15 +45,30 @@ export default async function handler(
         const responseTemplate = `
             RESPONSE TEMPLATE:
             ✅ Points present
+                - on its own line
+                - each suggestion must start with "-"
                 - Criterion : short justification
             
             ❌ Points missing
+                - on its own line
+                - each suggestion must start with "-"
                 - Criterion : short justification
             
             The section "✏️ Suggestions for improvement" must be:
             - on its own line
             - each suggestion must start with "-"
             - no other bullets allowed in this section
+        `;
+        // JSON instruction 
+        const jsonInstruction = `
+            Return a valid JSON object with exactly these fields:
+            {
+                "reply": "string (the markdown analysis)",
+                "quickReplies": [
+                    { "label": "short suggestion", "target": "snake_case_identifier" }
+                ]
+            }
+            Do not add any text outside the JSON object.
         `;
         // Quick reply handling prompt
         if (mode === "quick_reply") {
@@ -62,6 +78,8 @@ export default async function handler(
             Do not repeat the file content or provide generic advice.
             Provide concrete examples and actionable advice related to this specific topic.
             ${basePromptRules}
+            ${jsonInstruction}
+
         `;
         // README prompt
         } else if (message.toLowerCase().includes("readme")) {
@@ -76,6 +94,7 @@ export default async function handler(
             6. Practices, techniques, methods, and technologies used
             ${basePromptRules}
             ${responseTemplate}
+            ${jsonInstruction}
         `;
         // CONTRIBUTING prompt
         } else if (message.toLowerCase().includes("contributing")) {
@@ -90,6 +109,7 @@ export default async function handler(
                 6. The code of conduct for contributors
             ${basePromptRules}
             ${responseTemplate}
+            ${jsonInstruction}
         `;
         // DOCUMENTATION prompt
         } /*else {
@@ -123,24 +143,18 @@ export default async function handler(
         const data = await response.json();
 
         // Extraire la réponse de l'IA (format Ollama)
-        const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
+        const rawContent = data.message?.content || data.choices?.[0]?.message?.content; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
 
-        // Génération quick replies pour les recommandations
-        let quickReplies: QuickReply[] | undefined;
-        const improvementSection = aiReply.match(/✏️ Suggestions for improvement([\s\S]*?)(?=\n\n|$)/)?.[1];
-        if (improvementSection) {
-            const suggestionsLines = improvementSection
-                .split("\n")
-                .map((l: string) => l.trim())
-                .filter((l: string) => l.startsWith("-")||l.startsWith("•")); // Prendre les lignes qui commencent par un tiret ou une puce
-                
-            quickReplies = suggestionsLines.map((line: string) => {
-                const clean = line.replace(/^[-•]\s*/, "").split(":")[0].trim();
-                return {
-                    label: clean,
-                    target: clean.toLowerCase().replace(/\s+/g, "_") // Générer une cible à partir du label nettoyé
-                };
-            });
+        let aiReply = "No  response from AI.";
+        let quickReplies: QuickReply[] = [];
+
+        try {
+            const parsed = JSON.parse(rawContent);
+            aiReply = parsed.reply;
+            quickReplies = parsed.quickReplies || [];
+        } catch (err) {
+            console.error("JSON parse error:", rawContent);
+            aiReply = rawContent; // fallback sécurité
         }
 
         let conversationId: number;
@@ -158,7 +172,7 @@ export default async function handler(
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "User", message);
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "AI", aiReply);
 
-        res.status(200).json({ reply: aiReply, conversationId }); // Réponse de l'IA au format JSON à ma question
+        res.status(200).json({ reply: aiReply, conversationId, quickReplies }); // Réponse de l'IA au format JSON à ma question
 
     } catch (error) {
         console.error("AI error", error);
