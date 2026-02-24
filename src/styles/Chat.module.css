@@ -15,11 +15,9 @@
   border-right: 0.2rem solid #ddd;
   overflow: hidden;
 }
-
 .closed {
   width: 3.8rem;
 }
-
 .toggleBtn {
   background: none;
   border: none;
@@ -42,7 +40,6 @@
   width: 80%;
   align-items: center;
 }
-
 .sidebarmenu button:hover {
   transform: scale(1.05);
 }
@@ -70,7 +67,6 @@
   margin-bottom: 1rem;
   max-width: 80%;
 }
-
 .aiMessage {
   align-self: flex-start;
   background: #c8c8c4;
@@ -79,6 +75,25 @@
   margin-bottom: 1rem;
   max-width: 80%;
   margin-left: 10%;
+}
+
+/* Quick replies */
+.quickReplies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.quickReplies button {
+  background: #26A300;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+.quickReplies button:hover {
+  transform: scale(1.05);
 }
 
 /* Input */

@@ -47,8 +47,16 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     }
   }, [firstMessage]);
 
+  // Avoir des quick replies pour les recommandations
+  const handleQuickReply = (qr:{label: string, target: string}) => {
+    sendMessage(`user selected: ${qr.label}`, false, {
+      mode: "quick_reply",
+      quickReplyTarget: qr.target,
+    });
+  }
+
   // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA
-  const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
+  const sendMessage = async (messageToSent?: string, isFirstMessage = false, extraData?: any) => {
     setIsLoading(true);
     const text = messageToSent || input;
     if (!text.trim()) return;
@@ -61,7 +69,11 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({message: text, conversationId}),
+      body: JSON.stringify({
+        message: text, 
+        conversationId,
+        ...extraData, // Envoyer les données supplémentaires à l'API
+      }),
     });
 
     const data = await response.json();
@@ -73,6 +85,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const aiMessage: Message = {
       role: "ai",
       content: data.reply || "No response from AI.",
+      quickReplies: data.quickReplies || [], // Récupérer les quick replies de l'API
     };
 
     setMessages((prev: Message[]) => {
@@ -126,9 +139,23 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
         <div className={styles.messages}>
           {messages.map((msg, index) => (
             <div key={index} className={msg.role === "user" ? styles.userMessage : styles.aiMessage}>
-              {msg.role === "ai" ? (<ReactMarkdown>{msg.content}</ReactMarkdown>) : 
-              ( <p>{msg.content}</p>
-              )}
+              {msg.role === "ai" ? (
+                <>
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  {/* Afficher les quick replies si elles existent */}
+                  {msg.quickReplies && msg.quickReplies.length > 0 && (
+                    <div className={styles.quickReplies}>
+                      {msg.quickReplies.map((qr, qrIndex) => (
+                        <button key={qrIndex} className={styles.quickReplyButton} onClick={() => handleQuickReply(qr)}>
+                          {qr.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+                ) : (
+                  <p>{msg.content}</p>
+                )}
             </div>
           ))}
           {isLoading && <LoadingBar />}

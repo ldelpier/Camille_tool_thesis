@@ -5,6 +5,10 @@ type Data = {
     reply: string;
     conversationId?: number; // Ajout de l'ID de la conversation dans la réponse
 };
+type QuickReply = {
+    label: string;
+    target: string;
+};
 
 export default async function handler(
     req: NextApiRequest,
@@ -15,7 +19,7 @@ export default async function handler(
         return res.status(405).json({ reply: "Method Not Allowed" });
     }
     try {
-        const { message, conversationId: clientConversationId } = req.body; // Récupérer le message de l'utilisateur
+        const { message, conversationId: clientConversationId, mode, quickReplyTarget } = req.body; // Récupérer le message de l'utilisateur
 
         if (!message || typeof message !== "string") {
             return res.status(400).json({ reply: "Invalid message" });
@@ -41,19 +45,26 @@ export default async function handler(
             RESPONSE TEMPLATE:
             ✅ Points present
                 - Criterion : short justification
-                - Criterion : short justification
             
             ❌ Points missing
                 - Criterion : short justification
-                - Criterion : short justification
             
-            ✏️ Suggestions for improvement
-                - One short actionable suggestion
-                - One short actionable suggestion
-                - One short actionable suggestion
+            The section "✏️ Suggestions for improvement" must be:
+            - on its own line
+            - each suggestion must start with "-"
+            - no other bullets allowed in this section
+        `;
+        // Quick reply handling prompt
+        if (mode === "quick_reply") {
+            systemPrompt = `You are an expert in open-source documentation analysis.
+            The user just selected this improvement topic: "${quickReplyTarget}".
+            Analyze the repository content of the project and give a polite and pedagogical recommendation to the user.
+            Do not repeat the file content or provide generic advice.
+            Provide concrete examples and actionable advice related to this specific topic.
+            ${basePromptRules}
         `;
         // README prompt
-        if (message.toLowerCase().includes("readme")) {
+        } else if (message.toLowerCase().includes("readme")) {
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the README.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
             Criteria:
@@ -81,7 +92,7 @@ export default async function handler(
             ${responseTemplate}
         `;
         // DOCUMENTATION prompt
-        } else {
+        } /*else {
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the documentation files of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
             Criteria:
@@ -90,7 +101,7 @@ export default async function handler(
                 3. The project has a clear and concise documentation that help the onboarding of new developers.
             ${basePromptRules}
             ${responseTemplate}
-        `;}
+        `;}*/
         ;
         // Appel à Ollama
         const response = await fetch("http://localhost:11434/api/chat", {
@@ -113,6 +124,24 @@ export default async function handler(
 
         // Extraire la réponse de l'IA (format Ollama)
         const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No response from AI."; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
+
+        // Génération quick replies pour les recommandations
+        let quickReplies: QuickReply[] | undefined;
+        const improvementSection = aiReply.match(/✏️ Suggestions for improvement([\s\S]*?)(?=\n\n|$)/)?.[1];
+        if (improvementSection) {
+            const suggestionsLines = improvementSection
+                .split("\n")
+                .map((l: string) => l.trim())
+                .filter((l: string) => l.startsWith("-")||l.startsWith("•")); // Prendre les lignes qui commencent par un tiret ou une puce
+                
+            quickReplies = suggestionsLines.map((line: string) => {
+                const clean = line.replace(/^[-•]\s*/, "").split(":")[0].trim();
+                return {
+                    label: clean,
+                    target: clean.toLowerCase().replace(/\s+/g, "_") // Générer une cible à partir du label nettoyé
+                };
+            });
+        }
 
         let conversationId: number;
 
