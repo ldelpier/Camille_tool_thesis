@@ -7,13 +7,13 @@ import styles from "../styles/Chat.module.css";
 import { useConversation, Message } from "../context/conversationContext";
 import LoadingBar from "../components/loadingBar";
 
-
+// Avoir le message de la page d'acceuil
 type ChatPageProps = {
   firstMessage?: string;
 };
 
-// Pour l'optimisation du site et pour récupérer le message de la page d'accueil et l'afficher dans le chatbot
-// Nous faisons cela en utilisant getServerSideProps pour récupérer les données à chaque requête, ce qui est nécessaire pour afficher le message initial dans le chatbot.Et ça remplace le useEffect qui faisait la même chose.
+// Pour l'optimisation du site et récupération du message de Home pour l'afficher dans la conversation
+// Utilisation getServerSideProps pour récupérer les données à chaque requête et afficher le message initial dans le chatbot.
 export async function getServerSideProps(context: any) {
   const { firstMessage } = context.query;
   return {
@@ -26,10 +26,10 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false); // Pour savoir si le premier message a été envoyé ou pas
+  const [hasSentFirstMessage, setHasSentFirstMessage] = useState(false); 
   const {messages, setMessages, conversationId, setConversationId, resetConversation} = useConversation();
 
-  // Envoyer fistMessage seulement s'il n'y a pas de conversation en cours en utilisant useEffet
+  // Envoyer fistMessage seulement s'il n'y a pas de conversation en cours
   useEffect(() => {
     if (firstMessage && !hasSentFirstMessage && messages.length === 0) {
       sendMessage(firstMessage, true);
@@ -37,10 +37,9 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     }
   }, [firstMessage, hasSentFirstMessage, messages]);
 
-  // Détecter la source de la navigation pour savoir si l'utilisateur vient de la page home
+  // Détecter la source de la navigation, si c'est home reset tout
   useEffect(() => {
     if (firstMessage) {
-      // Nouvelle conversation, on reset tout
       resetConversation();
       sendMessage(firstMessage, true);
       setHasSentFirstMessage(true);
@@ -55,10 +54,12 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     });
   }
 
-  // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA
+  // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA avec le message à envoyer, le premier message et des données supplémentaires
   const sendMessage = async (messageToSent?: string, isFirstMessage = false, extraData?: any) => {
     setIsLoading(true);
+    
     const text = messageToSent || input;
+    
     if (!text.trim()) return;
 
     if (!isFirstMessage) {
@@ -72,7 +73,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       body: JSON.stringify({
         message: text, 
         conversationId,
-        ...extraData, // Envoyer les données supplémentaires à l'API
+        ...extraData, 
       }),
     });
 
@@ -85,14 +86,14 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const aiMessage: Message = {
       role: "ai",
       content: data.reply || "No response from AI.",
-      quickReplies: data.quickReplies || [], // Récupérer les quick replies de l'API
+      quickReplies: data.quickReplies || [],
     };
 
     setMessages((prev: Message[]) => {
       if (isFirstMessage){
         return [
           {role: "user", content: text}, 
-          aiMessage, // la réponse de l'IA
+          aiMessage,
         ];
       }
       return [...prev, aiMessage];
@@ -103,17 +104,17 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
 
   return (
     <div className={styles.containerChat}>
-      {/*C'est ce qui se trouve dans l'onglet*/}
-        <Head>
-          <title>Camille-Chatbot</title>
-          <link rel="icon" href="/rabbitkiki.ico" />
-        </Head>
-      {/* Barre latéral */}
+      {/*Ce qui se trouve dans l'onglet*/}
+      <Head>
+        <title>Camille-Chatbot</title>
+        <link rel="icon" href="/rabbitkiki.ico" />
+      </Head>
+
+      {/*Barre latéral*/}
       <aside className={`${styles.sidebar} ${!sidebarOpen ? styles.closed : ""}`}>
         <button className={styles.toggleBtn} onClick={() => setSidebarOpen(!sidebarOpen)}>
           ☰
         </button>
-
         {sidebarOpen && (
           <div className={styles.sidebarmenu}>
             <button onClick={resetConversation}>New discussion</button>
@@ -125,8 +126,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
             </Link>
           </div>
         )}
-
-        {/* Retour vers home */}
+        {/*Retour vers home*/}
         {sidebarOpen && (
           <Link href="/" style={{textDecoration: 'none'}}>
             <button className={styles.backButton}>Back to Home</button>
@@ -134,7 +134,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
         )}
       </aside>
 
-      {/* zone conversation */}
+      {/*zone conversation*/}
       <main className={styles.chatArea}>
         <div className={styles.messages}>
           {messages.map((msg, index) => (
@@ -142,7 +142,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
               {msg.role === "ai" ? (
                 <>
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  {/* Afficher les quick replies si elles existent */}
+                  {/*Afficher les quick replies si elles existent*/}
                   {msg.quickReplies && msg.quickReplies.length > 0 && (
                     <div className={styles.quickReplies}>
                       {msg.quickReplies.map((qr, i) => (
@@ -158,10 +158,12 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
                 )}
             </div>
           ))}
+          {/*Afficher la loadbar*/}
           {isLoading && <LoadingBar />}
           {!isLoading && <p>{messages.length} messages affichés</p>}
         </div>
 
+        {/*Zone d'écriture*/}
         <div className={styles.inputArea}>
           <input
             type="text"

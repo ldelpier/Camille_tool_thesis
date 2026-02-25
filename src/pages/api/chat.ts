@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../lib/db";
 
+// Formatage ddes données dans la conversation
 type Data = {
     reply: string;
-    conversationId?: number; // Ajout de l'ID de la conversation dans la réponse
+    conversationId?: number; 
     quickReplies?: QuickReply[];
 };
+// Formatage des quick replies
 type QuickReply = {
     label: string;
     target: string;
@@ -20,15 +22,15 @@ export default async function handler(
         return res.status(405).json({ reply: "Method Not Allowed" });
     }
     try {
-        const { message, conversationId: clientConversationId, mode, quickReplyTarget } = req.body; // Récupérer le message de l'utilisateur
+        // Récupérer le message de l'utilisateur
+        const { message, conversationId: clientConversationId, mode, quickReplyTarget } = req.body; 
 
         if (!message || typeof message !== "string") {
             return res.status(400).json({ reply: "Invalid message" });
         }
 
-        // Prompt système pour guider l'IA à répondre de manière pertinente et concise
         let systemPrompt = "";
-        // Rule based system prompt to adapt the AI's response
+        // Les règles du prompt pour la réponse de l'IA
         const basePromptRules = `
             - Use Markdown formatting
             - Output ONLY the template below
@@ -41,7 +43,7 @@ export default async function handler(
             - Use emojis exactly as shown
             - Do not add any text outside the template
         `;
-        // Templates for answer 
+        // Template pour la réponse 
         const responseTemplate = `
             RESPONSE TEMPLATE:
             ✅ Present points
@@ -123,12 +125,13 @@ export default async function handler(
             ${jsonInstruction}
         `;}
         ;
+
         // Appel à Ollama
         const response = await fetch("http://localhost:11434/api/chat", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                model: "mistral", // Vous pouvez changer pour: neural-chat, mistral, etc.
+                model: "mistral",
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: message }
@@ -141,7 +144,8 @@ export default async function handler(
         const data = await response.json();
 
         // Extraire la réponse de l'IA (format Ollama)
-        const rawContent = data.message?.content || data.choices?.[0]?.message?.content; // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
+        // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
+        const rawContent = data.message?.content || data.choices?.[0]?.message?.content;
 
         let aiReply = "No  response from AI.";
         let quickReplies: QuickReply[] = [];
@@ -160,7 +164,7 @@ export default async function handler(
             }
         } catch (err) {
             console.error("JSON parse error:", rawContent);
-            aiReply = rawContent; // fallback sécurité
+            aiReply = rawContent;
         }
 
         let conversationId: number;
@@ -178,7 +182,8 @@ export default async function handler(
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "User", message);
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "AI", aiReply);
 
-        res.status(200).json({ reply: aiReply, conversationId, quickReplies }); // Réponse de l'IA au format JSON à ma question
+        // Réponse de l'IA au format JSON à ma question
+        res.status(200).json({ reply: aiReply, conversationId, quickReplies }); 
 
     } catch (error) {
         console.error("AI error", error);

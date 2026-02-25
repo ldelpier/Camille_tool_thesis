@@ -15,6 +15,7 @@ export default function Home() {
   const[project, setProject] = useState("");
   const router = useRouter();
   
+  // Gérer le bouton pour aller à la page conversation
   const handleStart = () => {
     if (!project.trim()) return;
     router.push({
@@ -24,7 +25,7 @@ export default function Home() {
   }
   return (
     <>
-      {/*C'est ce qui se trouve dans l'onglet*/}
+      {/*Ce qui se trouve dans l'onglet*/}
       <Head>
         <title>Camille</title>
         <meta name="description" content="Tool description" />
@@ -33,10 +34,9 @@ export default function Home() {
       </Head>
 
       <div className={styles.page}>
-        {/* Titre */}
-        <h1 className={styles.titleHome}>CAMILLE</h1>
-        
-          {/* Expplication - Left side */}
+        {/*Titre*/}
+        <h1 className={styles.titleHome}>CAMILLE</h1>-
+          {/*Expplication*/}
           <div className={styles.explanationSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
             <p className={styles.explanationText}>
@@ -48,7 +48,7 @@ export default function Home() {
             </p>
           </div>
 
-        {/* Pour entrer dans le chatbot c'est ici qu'il nous faudra un lien vers la deuxième page */}
+        {/*Commencer la conversation (input)*/}
         <div className={styles.inputSection}>
           <input
             type="text"
@@ -66,8 +66,9 @@ export default function Home() {
               </svg>
             </button>
         </div>
+
+        {/*Les critères à gauche et l'image bot à droite*/}
         <div className={styles.mainContent}>
-          {/* Les critères */}
           <div className={styles.criteriaSection}>
             <h2 className={styles.sectionTitle}>Criteria</h2>
             <ul className={styles.criteriaList}>
@@ -91,7 +92,6 @@ export default function Home() {
               </li>
             </ul>
           </div>
-          {/* Image ChatBot */}
           <Image 
           src="/memoire_chatbot.png" 
           alt="Description de l'image" 

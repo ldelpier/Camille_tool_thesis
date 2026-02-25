@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 
-export default function History() {
+// Pas encore implémenté
+export default function Setting() {
   return (
     <>
       <Head>

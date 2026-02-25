@@ -1,12 +1,14 @@
 import db from "@/lib/db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+// Formatae données dans l'historique
 type Data = {
     conversations?: any[];
     error?: string;
     message?: string;
 };
 
+// Les méthodes qui sont faites dans la BD
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
     try {
