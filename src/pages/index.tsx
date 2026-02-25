@@ -35,7 +35,7 @@ export default function Home() {
 
       <div className={styles.page}>
         {/*Titre*/}
-        <h1 className={styles.titleHome}>CAMILLE</h1>-
+        <h1 className={styles.titleHome}>CAMILLE</h1>
           {/*Expplication*/}
           <div className={styles.explanationSection}>
             <h2 className={styles.sectionTitle}>Description</h2>
