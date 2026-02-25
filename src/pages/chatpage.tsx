@@ -49,7 +49,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
 
   // Avoir des quick replies pour les recommandations
   const handleQuickReply = (qr:{label: string, target: string}) => {
-    sendMessage(`user selected: ${qr.label}`, false, {
+    sendMessage(`User choose: ${qr.label}`, false, {
       mode: "quick_reply",
       quickReplyTarget: qr.target,
     });
@@ -77,7 +77,6 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     });
 
     const data = await response.json();
-    console.log("API response :", data);
     // Récupère l'Id de la conversation renvoyé par l'API
     if (data.conversationId && !conversationId) {
       setConversationId(data.conversationId);

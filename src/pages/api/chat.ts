@@ -44,12 +44,12 @@ export default async function handler(
         // Templates for answer 
         const responseTemplate = `
             RESPONSE TEMPLATE:
-            ✅ Points present
+            ✅ Present points
                 - on its own line
                 - each suggestion must start with "-"
                 - Criterion : short justification
             
-            ❌ Points missing
+            ❌ Missing points
                 - on its own line
                 - each suggestion must start with "-"
                 - Criterion : short justification
@@ -69,6 +69,8 @@ export default async function handler(
                 ]
             }
             Do not add any text outside the JSON object.
+            If there are NO suggestions for improvement, quickReplies must be an empty array.
+            Do not invent suggestions. 
         `;
         // Quick reply handling prompt
         if (mode === "quick_reply") {
@@ -112,23 +114,19 @@ export default async function handler(
             ${jsonInstruction}
         `;
         // DOCUMENTATION prompt
-        } /*else {
+        } else {
             systemPrompt = `You are an expert in open-source documentation analysis.
-            Your task is to analyze the documentation files of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
-            Criteria:
-                1. The project has a clear and concise README.md file that provides an overview of the project, its purpose, and how to get started.
-                2. The project has a CONTRIBUTING.md file that outlines the guidelines for contributing to the project, including how to submit issues and pull requests.
-                3. The project has a clear and concise documentation that help the onboarding of new developers.
+            Your task is to analyze the documentation files of a given project and evaluate whether the documentation is well written or not and if it respect its putpose.
+            For example, does the Code of conduct of the project explain correctly the rules of interaction between contributors ? Yes,it respect its purpose
             ${basePromptRules}
             ${responseTemplate}
-        `;}*/
+            ${jsonInstruction}
+        `;}
         ;
         // Appel à Ollama
         const response = await fetch("http://localhost:11434/api/chat", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json", 
-            },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 model: "mistral", // Vous pouvez changer pour: neural-chat, mistral, etc.
                 messages: [
@@ -151,7 +149,15 @@ export default async function handler(
         try {
             const parsed = JSON.parse(rawContent);
             aiReply = parsed.reply;
-            quickReplies = parsed.quickReplies || [];
+            const hasSuggestion = aiReply.includes("✏️ Suggestions for improvement") && 
+            parsed.quickReplies && 
+            parsed.quickReplies.length > 0;
+
+            if (hasSuggestion){
+                quickReplies = parsed.quickReplies;
+            } else {
+                quickReplies = []; 
+            }
         } catch (err) {
             console.error("JSON parse error:", rawContent);
             aiReply = rawContent; // fallback sécurité

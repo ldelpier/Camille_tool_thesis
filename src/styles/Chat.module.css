@@ -56,6 +56,9 @@
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 /* Message styles */
@@ -83,6 +86,10 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  overflow: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 .quickReplies button {
   background: #26A300;
