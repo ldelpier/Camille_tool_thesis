@@ -81,8 +81,8 @@ export default async function handler(
             Analyze the repository content of the project and give a polite and pedagogical recommendation to the user.
             Do not repeat the file content or provide generic advice.
             Provide concrete examples and actionable advice related to this specific topic.
-            ${basePromptRules}
             ${jsonInstruction}
+            ${basePromptRules}
 
         `;
         // README prompt
@@ -90,15 +90,16 @@ export default async function handler(
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the README.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
             Criteria:
-            1. Purpose of the project
-            2. Explanation of the code structure
-            3. Overview of the architecture
-            4. Main characteristics of the project
-            5. Community and contribution practices
-            6. Practices, techniques, methods, and technologies used
+                1. Purpose of the project
+                2. Getting start to help user of the project to run the project
+                3. Explanation of the code structure which provide a view of the files of the project and explain how the project is organized.
+                4. Main characteristics of the project which are the main feature of the project
+                5. Community and contribution practices
+                6. Licence
+                If criteria is a link or a redirection to another files it is ok because it present in the README.me.
+            ${jsonInstruction}
             ${basePromptRules}
             ${responseTemplate}
-            ${jsonInstruction}
         `;
         // CONTRIBUTING prompt
         } else if (message.toLowerCase().includes("contributing")) {
@@ -111,18 +112,18 @@ export default async function handler(
                 4. Information about the code, tests, and database
                 5. Source information to get started with the project
                 6. The code of conduct for contributors
+            ${jsonInstruction}
             ${basePromptRules}
             ${responseTemplate}
-            ${jsonInstruction}
         `;
         // DOCUMENTATION prompt
         } else {
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the documentation files of a given project and evaluate whether the documentation is well written or not and if it respect its putpose.
             For example, does the Code of conduct of the project explain correctly the rules of interaction between contributors ? Yes,it respect its purpose
+            ${jsonInstruction}
             ${basePromptRules}
             ${responseTemplate}
-            ${jsonInstruction}
         `;}
         ;
 
@@ -150,6 +151,7 @@ export default async function handler(
         let aiReply = "No  response from AI.";
         let quickReplies: QuickReply[] = [];
 
+        // Afficher les quick replies
         try {
             const parsed = JSON.parse(rawContent);
             aiReply = parsed.reply;
