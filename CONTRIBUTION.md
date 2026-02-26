@@ -78,37 +78,44 @@ Each pull request made should be review by at least one other contributor.
 ### 🖊️ Reviewing pull requests
 All contributors who review and provide feedback on Pull Requests have a responsibility to both the project and the individual making the contribution.
 Reviews and feedback must be helpful, insightful, and geared towards improving the contribution.
-If pull Request is blocked, there will be an pedagogic and nice explanation so a simple no will be not accepted as a justification.
-Be open to having your mind changed. Be open to working with the contributor to make the Pull Request better.
+If pull request is blocked, there will be an pedagogic and nice explanation so a simple no will be not accepted as a justification.
+Be open to having your mind changed. Be open to working with the contributor to make the pull request better.
 
 Reviews that are dismissive or disrespectful of the contributor or any other reviewers are strictly counter to the Code of Conduct.
-When reviewing a pull request, the primary goals are for the codebase to improve and for the person submitting the request to succeed.
-Even if a pull request does not land, the submitters should come away from the experience feeling like their effort was not wasted or unappreciated.
-Every pull request from a new contributor is an opportunity to grow the community. Review a bit at a time. Do not overwhelm new contributors.
+When reviewing a pull request, the primary goals are for the codebase to improve and for the person submitting the request to succeed. Whatever happens, the submitters should come away from the experience feeling like their effort was not wasted or unappreciated especially when it come from a new contributor because they are an opporunity to grow the community. 
 
-It is tempting to micro-optimize and make everything about relative performance, perfect grammar, or exact style matches. Do not succumb to that temptation.
-Focus first on the most significant aspects of the change:
+Focus first on the most significant aspects of the change :
 
     Does this change make sense ?
     Does this change make the project better, even if only incrementally?
     Are there clear bugs or larger scale issues that need attending to?
     Is the commit message readable and correct? If it contains a breaking change is it clear enough?
+    The change come with a test and a documentation ? 
 
-When changes are necessary, request them, do not demand them, and do not assume that the submitter already knows how to add a test or run a benchmark.
-Specific performance optimization techniques, coding styles, and conventions change over time. The first impression you give to a new contributor never does.
-If your comments were addressed but were not folded automatically after new commits or if they proved to be mistaken, please,
-hide them with the appropriate reason to keep the conversation flow concise and relevant.
-Be aware of the person behind the code.
+Then focus on relative performance, perfect grammar and so on. It is important but we need a list a priorities.
+
+When changes are necessary, request them, do not demand them, and do not assume that the submitter already knows how to add a test or run a benchmark. Specific performance optimization techniques, coding styles, and conventions change over time. The first impression you give to a new contributor never does. If your comments were addressed but were not folded automatically after new commits or if they proved to be mistaken, please, hide them with the appropriate reason to keep the conversation flow concise and relevant.
+Be aware of the person behind the code!
 
 If a pull request appears to be abandoned or stalled, it is polite to first check with the contributor to see
 if they intend to continue the work before checking if they would mind if you took it over.
-When doing so, it is courteous to give the original contributor credit for the work they started in the commit log,
-or by using an Author: meta-data tag in the commit.
-Approving a change.
+When doing so, it is courteous to give the original contributor credit for the work they started by using an Author: meta-data tag in the commit.
 
+Regarding the approval of changes, any administrator is authorized to approve any other contributor's work and collaborators are not permitted to approve their own pull requests.
+Collaborators indicate that they have reviewed and approve of the changes in a pull request either by using GitHub's Approval Workflow, which is preferred, or by leaving an LGTM ("Looks Good To Me") comment.
+When explicitly using the "Changes requested" component of the GitHub Approval Workflow, show empathy.
+That is, do not be rude or abrupt with your feedback and offer concrete suggestions for improvement, if possible. If you're not sure how a particular change can be improved, say so. When you have suggestd changes in the pull resquest, it is a good idea to follow up them. Make sure that your review is not vague, dismissive, or unconstructive. 
 
+Use Changes requested to block a pull request from landing. When doing so, explain why you believe the pull request should not land along with an explanation of what may be an acceptable alternative course, if any. If you are stuck for idea, try using the criteria above. 
+For the submitter : be patient, accept that there are different opinions, performance is not everything and try ! 
 ### 🏷️ Labeler
+Once a template for pull request has been created, labels may appear to provide more structure and guidance for the pull request. 
 
 ## 📁 Repositories
+At least three repositories should be described here: 
+- the one containing the source code
+- the one containing the documentation and templates
+- and finally the one with the gitHb action. 
 
-## 🦜 Talk to the community 
+## 🦜 Talk to the community
+For the moment, the community is composed of one person but I am sure that it will change and maybe a reddit or a discord will be created and a link to these chat channel will be added here. 
