@@ -4,13 +4,7 @@ import db from "../../lib/db";
 // Formatage ddes données dans la conversation
 type Data = {
     reply: string;
-    conversationId?: number; 
-    quickReplies?: QuickReply[];
-};
-// Formatage des quick replies
-type QuickReply = {
-    label: string;
-    target: string;
+    conversationId?: number;
 };
 
 export default async function handler(
@@ -23,7 +17,7 @@ export default async function handler(
     }
     try {
         // Récupérer le message de l'utilisateur
-        const { message, conversationId: clientConversationId, mode, quickReplyTarget } = req.body; 
+        const { message, conversationId: clientConversationId } = req.body; 
 
         if (!message || typeof message !== "string") {
             return res.status(400).json({ reply: "Invalid message" });
@@ -62,31 +56,9 @@ export default async function handler(
             - no other bullets allowed in this section
         `;
         // JSON instruction 
-        const jsonInstruction = `
-            Return a valid JSON object with exactly these fields:
-            {
-                "reply": "string (the markdown analysis)",
-                "quickReplies": [
-                    { "label": "short suggestion", "target": "snake_case_identifier" }
-                ]
-            }
-            Do not add any text outside the JSON object.
-            If there are NO suggestions for improvement, quickReplies must be an empty array.
-            Do not invent suggestions. 
-        `;
         // Quick reply handling prompt
-        if (mode === "quick_reply") {
-            systemPrompt = `You are an expert in open-source documentation analysis.
-            The user just selected this improvement topic: "${quickReplyTarget}".
-            Analyze the repository content of the project and give a polite and pedagogical recommendation to the user.
-            Do not repeat the file content or provide generic advice.
-            Provide concrete examples and actionable advice related to this specific topic.
-            ${jsonInstruction}
-            ${basePromptRules}
-
-        `;
         // README prompt
-        } else if (message.toLowerCase().includes("readme")) {
+        if (message.toLowerCase().includes("readme")) {
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the README.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
             Criteria:
@@ -97,7 +69,6 @@ export default async function handler(
                 5. Community and contribution practices
                 6. Licence
                 If criteria is a link or a redirection to another files it is ok because it present in the README.me.
-            ${jsonInstruction}
             ${basePromptRules}
             ${responseTemplate}
         `;
@@ -109,10 +80,8 @@ export default async function handler(
                 1. Steps to contribute
                 2. Tasks suitable for newcomers
                 3. Explanation of how to submit a change
-                4. Information about the code, tests, and database
-                5. Source information to get started with the project
-                6. The code of conduct for contributors
-            ${jsonInstruction}
+                4. Information about repository
+                5. The code of conduct for contributors
             ${basePromptRules}
             ${responseTemplate}
         `;
@@ -121,7 +90,6 @@ export default async function handler(
             systemPrompt = `You are an expert in open-source documentation analysis.
             Your task is to analyze the documentation files of a given project and evaluate whether the documentation is well written or not and if it respect its putpose.
             For example, does the Code of conduct of the project explain correctly the rules of interaction between contributors ? Yes,it respect its purpose
-            ${jsonInstruction}
             ${basePromptRules}
             ${responseTemplate}
         `;}
@@ -132,7 +100,7 @@ export default async function handler(
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                model: "mistral",
+                model: "llama3.2",
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: message }
@@ -146,28 +114,7 @@ export default async function handler(
 
         // Extraire la réponse de l'IA (format Ollama)
         // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
-        const rawContent = data.message?.content || data.choices?.[0]?.message?.content;
-
-        let aiReply = "No  response from AI.";
-        let quickReplies: QuickReply[] = [];
-
-        // Afficher les quick replies
-        try {
-            const parsed = JSON.parse(rawContent);
-            aiReply = parsed.reply;
-            const hasSuggestion = aiReply.includes("✏️ Suggestions for improvement") && 
-            parsed.quickReplies && 
-            parsed.quickReplies.length > 0;
-
-            if (hasSuggestion){
-                quickReplies = parsed.quickReplies;
-            } else {
-                quickReplies = []; 
-            }
-        } catch (err) {
-            console.error("JSON parse error:", rawContent);
-            aiReply = rawContent;
-        }
+        const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No  response from AI.";
 
         let conversationId: number;
 
@@ -185,7 +132,7 @@ export default async function handler(
         db.prepare("INSERT INTO conversations (conversation_id, role, content) VALUES (?, ?, ?)").run(conversationId, "AI", aiReply);
 
         // Réponse de l'IA au format JSON à ma question
-        res.status(200).json({ reply: aiReply, conversationId, quickReplies }); 
+        res.status(200).json({ reply: aiReply, conversationId }); 
 
     } catch (error) {
         console.error("AI error", error);

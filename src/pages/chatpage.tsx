@@ -46,16 +46,8 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     }
   }, [firstMessage]);
 
-  // Avoir des quick replies pour les recommandations
-  const handleQuickReply = (qr:{label: string, target: string}) => {
-    sendMessage(`User choose: ${qr.label}`, false, {
-      mode: "quick_reply",
-      quickReplyTarget: qr.target,
-    });
-  }
-
   // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA avec le message à envoyer, le premier message et des données supplémentaires
-  const sendMessage = async (messageToSent?: string, isFirstMessage = false, extraData?: any) => {
+  const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
     setIsLoading(true);
     
     const text = messageToSent || input;
@@ -73,7 +65,6 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       body: JSON.stringify({
         message: text, 
         conversationId,
-        ...extraData, 
       }),
     });
 
@@ -86,7 +77,6 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const aiMessage: Message = {
       role: "ai",
       content: data.reply || "No response from AI.",
-      quickReplies: data.quickReplies || [],
     };
 
     setMessages((prev: Message[]) => {
@@ -140,19 +130,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
           {messages.map((msg, index) => (
             <div key={index} className={msg.role === "user" ? styles.userMessage : styles.aiMessage}>
               {msg.role === "ai" ? (
-                <>
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  {/*Afficher les quick replies si elles existent*/}
-                  {msg.quickReplies && msg.quickReplies.length > 0 && (
-                    <div className={styles.quickReplies}>
-                      {msg.quickReplies.map((qr, i) => (
-                        <button key={i} className={styles.quickReplyButton} onClick={() => handleQuickReply(qr)}>
-                          {qr.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </>
                 ) : (
                   <p>{msg.content}</p>
                 )}
