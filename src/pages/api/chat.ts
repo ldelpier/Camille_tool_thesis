@@ -7,10 +7,125 @@ type Data = {
     conversationId?: number;
 };
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<Data>
-) {
+// Détecter si le message contient une URL GitHub 
+function extractGitHubUrl(message: string): string | null {
+    const match = message.match(/https:\/\/github\.com\/[^\s]+/);
+    return match ? match[0] : null;
+}
+
+// URL GiHub en URL raw pour lire le contenu
+function convertToRawUrl(githubUrl: string): string {
+    return githubUrl
+        .replace("github.com", "raw.githubusercontent.com")
+        .replace("/blob/", "/");
+}
+
+// Fetch le contenu depuis GitHub
+async function fetchGitHubFileContent(githubUrl: string): Promise<string | null> {
+    try {
+        const rawUrl = convertToRawUrl(githubUrl);
+        const response = await fetch(rawUrl);
+
+        if (!response.ok) {
+            console.error(`Erreur lors du fetch GitHub : ${response.status}`);
+            return null;
+        }
+
+        return await response.text();
+    } catch (error) {
+        console.error("Erreur fetch GitHub :", error);
+        return null;
+    }
+}
+// PROMPTS //
+// Prompt system global 
+const systemPrompt = `
+You are a documentation compliance analyzer for open-source projects.
+Your task is to verify whether specific criteria are EXPLICITLY present (✅) in a given document.
+Strict rules:
+    - Use ONLY the provided document content.
+    - Do NOT infer or assume information.
+    - A criterion is "✅" ONLY if it is clearly written in the document.
+    - If not explicitly found, mark it as "❌".
+    - For every "✅" criterion, you MUST quote a short exact excerpt from the document as 🔎.
+    - If no quote exists, the criterion must be "❌".
+    - Do NOT rewrite or summarize the document.
+    - Do NOT add explanations outside the JSON format.
+    - Always respond in English.
+    - Output must be valid JSON only.
+Allowed values: "✅" or "❌".
+`;
+
+// User Prompt README
+function buildReadmePrompt(fileContent: string) { return `
+    Here is the README.md file to analyze:
+    """
+    ${fileContent}
+    """
+    Check the document against the following criteria:
+        1. Purpose of the project
+        2. Getting started instructions (how to run or install the project)
+        3. Explanation of the code structure / Architecture
+        4. Main features of the project
+        5. Community and contribution practices
+        6. License information
+    Return the result in this exact JSON format:
+    {
+    "Purpose": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Getting_started": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Code_structure": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Main_features": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Community_contribution": { "status": "✅|❌", "🔎": "short quote or null" },
+    "License": { "status": "✅|❌", "🔎": "short quote or null" }
+    }`;
+}
+
+// User Prompt CONTRIBUTING
+function buildContributingPrompt(fileContent: string) { return `
+    Here is the CONTRIBUTING.md file to analyze:
+    """
+    ${fileContent}
+    """
+    Check the document against the following criteria:
+        1. Steps to contribute (How to start)
+        2. Tasks suitable for newcomers (Good first issues, beginners)
+        3. Explanation of how to submit a change (PR, commits, branches)
+        4. Information about the repository (Tech stack, setup, name of folder)
+        5. Code of conduct for contributors (Rules of behavior)
+    Return the result in this exact JSON format:
+    {
+    "Steps_to_contribute": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Tasks_for_newcomers": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Submit_change_explanation": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Repository_information": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Code_of_conduct": { "status": "✅|❌", "🔎": "short quote or null" }
+    }`;
+}
+
+// User Prompt Document
+function buildDocumentationPrompt(fileContent: string) { return `
+    Here is the documentation file to analyze:
+    """
+    ${fileContent}
+    """
+    Check whether the document fulfills its intended purpose.
+    Criteria:
+        1. Clear explanation of its purpose
+        2. Instructions or guidelines are clearly written
+        3. Target audience is identifiable
+        4. Rules or conventions are explicitly defined (if applicable)
+        5. Examples or usage instructions are provided
+    Return the result in this exact JSON format:
+    {
+    "Purpose_explained": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Clear_instructions": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Target_audience": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Rules_defined": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Examples_or_usage": { "status": "✅|❌", "🔎": "short quote or null" }
+    }`;
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     // Autoriser uniquement les requêtes POST
     if (req.method !== "POST") {
         return res.status(405).json({ reply: "Method Not Allowed" });
@@ -23,77 +138,25 @@ export default async function handler(
             return res.status(400).json({ reply: "Invalid message" });
         }
 
-        let systemPrompt = "";
-        // Les règles du prompt pour la réponse de l'IA
-        const basePromptRules = `
-            - Use Markdown formatting
-            - Output ONLY the template below
-            - One bullet per criterion
-            - Each bullet must contain a short justification (max 12 words)
-            - Do not write paragraphs
-            - Do NOT merge criteria into one line
-            - Do NOT repeat the file content
-            - Always write in English
-            - Use emojis exactly as shown
-            - Do not add any text outside the template
-        `;
-        // Template pour la réponse 
-        const responseTemplate = `
-            RESPONSE TEMPLATE:
-            ✅ Present points
-                - on its own line
-                - each suggestion must start with "-"
-                - Criterion : short justification
-            
-            ❌ Missing points
-                - on its own line
-                - each suggestion must start with "-"
-                - Criterion : short justification
-            
-            The section "✏️ Suggestions for improvement" must be:
-            - on its own line
-            - each suggestion must start with "-"
-            - no other bullets allowed in this section
-        `;
-        // JSON instruction 
-        // Quick reply handling prompt
-        // README prompt
-        if (message.toLowerCase().includes("readme")) {
-            systemPrompt = `You are an expert in open-source documentation analysis.
-            Your task is to analyze the README.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
-            Criteria:
-                1. Purpose of the project
-                2. Getting start to help user of the project to run the project
-                3. Explanation of the code structure which provide a view of the files of the project and explain how the project is organized.
-                4. Main characteristics of the project which are the main feature of the project
-                5. Community and contribution practices
-                6. Licence
-                If criteria is a link or a redirection to another files it is ok because it present in the README.me.
-            ${basePromptRules}
-            ${responseTemplate}
-        `;
-        // CONTRIBUTING prompt
-        } else if (message.toLowerCase().includes("contributing")) {
-            systemPrompt = `You are an expert in open-source documentation analysis.
-            Your task is to analyze the CONTRIBUTING.md file of a given project and evaluate whether each criterion below is PRESENT or MISSING, with a short justification.
-            Criteria:
-                1. Steps to contribute
-                2. Tasks suitable for newcomers
-                3. Explanation of how to submit a change
-                4. Information about repository
-                5. The code of conduct for contributors
-            ${basePromptRules}
-            ${responseTemplate}
-        `;
-        // DOCUMENTATION prompt
-        } else {
-            systemPrompt = `You are an expert in open-source documentation analysis.
-            Your task is to analyze the documentation files of a given project and evaluate whether the documentation is well written or not and if it respect its putpose.
-            For example, does the Code of conduct of the project explain correctly the rules of interaction between contributors ? Yes,it respect its purpose
-            ${basePromptRules}
-            ${responseTemplate}
-        `;}
-        ;
+        // Détection URL dans le message
+        let userPrompt = message;
+        const githubUrl = extractGitHubUrl(message);
+        let fileContent: string | null = null;
+
+        if (githubUrl) {
+            fileContent = await fetchGitHubFileContent(githubUrl);
+            if (!fileContent) {
+                return res.status(400).json({ reply: "Unable to fetch the file from GitHub. Please check the URL and make sure the repository is public." });
+            }
+
+            if (message.toLowerCase().includes("readme")) { 
+                userPrompt = buildReadmePrompt(fileContent);
+            } else if (message.toLowerCase().includes("contributing")) {
+                userPrompt = buildContributingPrompt(fileContent);
+            } else {
+                userPrompt = buildDocumentationPrompt(fileContent);
+            }
+        }
 
         // Appel à Ollama
         const response = await fetch("http://localhost:11434/api/chat", {
@@ -103,10 +166,10 @@ export default async function handler(
                 model: "llama3.2",
                 messages: [
                     { role: "system", content: systemPrompt },
-                    { role: "user", content: message }
+                    { role: "user", content: userPrompt }
                 ],
                 stream: false,
-                temperature: 0,
+                temperature: 0
             })
         });
 
