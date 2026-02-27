@@ -18,7 +18,7 @@ The Camille project welcomes all contributions from anyone willing to work in go
 9. Talk to the community
 
 ## 🧑‍🤝‍🧑 Code of Conduct <!-- il faut mettre le lien correct (celui du main)>
-This project adheres to a [Code of Conduct](https://github.com/ldelpier/master_thesis/blob/documentation/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
+This project adheres to a [Code of Conduct](https://github.com/ldelpier/master_thesis/blob/front_back/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
 
 ## ℹ️ Information about the code 
 The project is organized into the following main directories:

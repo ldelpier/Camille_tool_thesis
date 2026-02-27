@@ -25,33 +25,7 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
-The project is organized into the following main directories:
-### `public/`
-Contains static assets such as images in various formats. Files in this directory are served directly at the root path.
-### `src/`
-This is the main source folder of the project. It contains four subdirectories:
-- **`data/`**
-    Contains the conversation database (data storage for chat history).
-- **`lib/`**
-    Contains the database initialization.
-- **`pages/`**
-    This is the core of the application when using the Next.js Page Router. It contains both frontend pages and backend API routes:
-    - **`pages/api/`**
-        Contains API routes:
-        - The **chat.ts**, which connects the frontend to the LLM model and manages conversation history.
-        - The **history.ts**, which allows you to retrieve and manage stored conversations.
-    - Other files in `pages/` define the frontend of the website:
-        - `index.tsx` — Home page (`/`).
-        - `chatpage.tsx` — Chat interface page, accessible after sending a message from the home page.
-        - `history.tsx` — Conversation history (archive) page.
-        - `setting.tsx` — Settings page (not yet implemented).
-        - `_app.tsx` — Custom App component (used to initialize pages).
-        - `_document.tsx` — Custom Document component (used to extend the HTML document structure).
-- **`styles/`**
-    contains the global style of the application and the style of the index, chatpage, history pages.
-
-## 🗼Overview of the architecture
-what i put there ?
+The structure of the code is explained in the [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md).
 
 ## 🎬 Getting started
 First, run the development server:
@@ -75,7 +49,7 @@ Another important point concerns the documentation : we focus on README and CONT
 ## 👥 Community and contribution practices
 The administrators of this project is Louise Delpierre (for the moment).
 Any contribution is welcome if it is made with respect and a desire to help, rather than to judge and criticise.
-If you want to contribute by improving or adding something to this project, please go check `CONTRIBUTING.md`. <!-- il faut mettre un lien correct (celui du main)>
+If you want to contribute by improving or adding something to this project, please go check [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md). <!-- il faut mettre un lien correct (celui du main)>
 
 ## ✒️ Practices, techniques, methods, and technologies used
 Currently, I don't know what to say about practice, techniques, methods, and so on. However, I can say this : make the best we can, the smallest change is a change and a great start to begin. Document what you make for you and for others so try to explain like you have to explain to a child of 7 year 😉.
