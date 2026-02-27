@@ -21,8 +21,30 @@ The Camille project welcomes all contributions from anyone willing to work in go
 This project adheres to a [Code of Conduct](https://github.com/ldelpier/master_thesis/blob/documentation/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
 
 ## ℹ️ Information about the code 
-about the code, tests, and database 
-Maybe a little to repetitive with README
+The project is organized into the following main directories:
+### `public/`
+Contains static assets such as images in various formats. Files in this directory are served directly at the root path.
+### `src/`
+This is the main source folder of the project. It contains four subdirectories:
+- **`data/`**
+    Contains the conversation database (data storage for chat history).
+- **`lib/`**
+    Contains the database initialization.
+- **`pages/`**
+    This is the core of the application when using the Next.js Page Router. It contains both frontend pages and backend API routes:
+    - **`pages/api/`**
+        Contains API routes:
+        - The **chat.ts**, which connects the frontend to the LLM model and manages conversation history.
+        - The **history.ts**, which allows you to retrieve and manage stored conversations.
+    - Other files in `pages/` define the frontend of the website:
+        - `index.tsx` — Home page (`/`).
+        - `chatpage.tsx` — Chat interface page, accessible after sending a message from the home page.
+        - `history.tsx` — Conversation history (archive) page.
+        - `setting.tsx` — Settings page (not yet implemented).
+        - `_app.tsx` — Custom App component (used to initialize pages).
+        - `_document.tsx` — Custom Document component (used to extend the HTML document structure).
+- **`styles/`**
+    contains the global style of the application and the style of the index, chatpage, history pages.
 
 ## 🔄 How to join the project
 To join the project, there are some stepsto follow 
@@ -34,9 +56,6 @@ To join the project, there are some stepsto follow
 6. When your change is rock solid, make a pull request to add you change to the main project.
 That is it. You join our project, Welcome !
 For the moment it is all I can find for this "how to join the project"
-
-## 🏗️ Build your worplace 
-+ How to use, build, and modify the code
 
 ## 🚀 Steps to Contribute
 is not the same thing than how to join ? 
