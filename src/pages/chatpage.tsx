@@ -64,7 +64,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: text, 
-        conversationId,
+        conversationId: conversationId || null,
       }),
     });
 
@@ -78,12 +78,14 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     let formattedContent = data.reply || "No response from AI.";
 
     try {
-      const result = JSON.parse(data.reply);
-      const formattedOutput = Object.entries(result).map(([key, value]: any) => {
-        return `${key} ⇒ status: ${value.status}, 🔎: ${value.evidence ?? "null"}`;
+      const cleaned = data.reply.replace(/```json|```/g, "").trim();
+      const result = JSON.parse(cleaned);
+      const lines = Object.entries(result).map(([key, value]: any) => {
+        const quote = value["🔎"] ? ` — 🔎 *"${value["🔎"]}"*` : "";
+        return `- **${key.replace(/_/g, " ")}** : ${value.status}${quote}`;
       });
 
-      formattedContent = formattedOutput.join("\n");
+      formattedContent = lines.join("\n");
     } catch(error){
       console.error("Invalid JSON from AI", error);
     }

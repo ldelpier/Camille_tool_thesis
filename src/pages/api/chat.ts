@@ -1,16 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../lib/db";
-// Config pour agrandir le timeout 
-export const config = {
-    api: {
-        bodyParser: {
-            sizeLimit: '10mb',
-        },
-        responseLimit: false,
-        externalResolver: true,
-  },
-  maxDuration: 60,
-}
+import { GoogleGenAI } from "@google/genai";
+
 // Formatage ddes données dans la conversation
 type Data = {
     reply: string;
@@ -135,6 +126,9 @@ function buildDocumentationPrompt(fileContent: string) { return `
     }`;
 }
 
+// CLE API 
+const genAI = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY!,});
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     // Autoriser uniquement les requêtes POST
     if (req.method !== "POST") {
@@ -166,28 +160,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             } else {
                 userPrompt = buildDocumentationPrompt(fileContent);
             }
+        } else {
+            return res.status(400).json({reply: "Please provide a valid GitHub URL to analyse."});
         }
 
-        // Appel à Ollama
-        const response = await fetch("http://localhost:11434/api/chat", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-                model: "llama3.2",
-                messages: [
-                    { role: "system", content: systemPrompt },
-                    { role: "user", content: userPrompt }
-                ],
-                stream: false,
-                temperature: 0
-            })
+        // Appel à API Gemini
+        const prompt = `
+        SYSTEM INSTRUCTIONS:
+        ${systemPrompt}
+
+        USER DOCUMENT:
+        ${userPrompt}
+        `;
+
+        const response = await genAI.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: [prompt],
+            config: {
+                temperature: 0,
+                maxOutputTokens: 500,
+            },
         });
 
-        const data = await response.json();
-
-        // Extraire la réponse de l'IA (format Ollama)
-        // si message existe, prendre son contenu, sinon prendre le contenu du premier choix, sinon message par défaut
-        const aiReply = data.message?.content || data.choices?.[0]?.message?.content || "No  response from AI.";
+        const aiReply = response.text;
+        if (!aiReply){
+            return res.status(500).json({reply: "Empty response from Gemini"});
+        }
 
         let conversationId: number;
 
@@ -207,8 +205,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         // Réponse de l'IA au format JSON à ma question
         res.status(200).json({ reply: aiReply, conversationId }); 
 
-    } catch (error) {
+    } catch (error: any) {
         console.error("AI error", error);
+        if (error?.status === 429) {
+            return res.status(429).json({ reply: "Quota limit reached. Please try again tomorrow." });
+        }
         return res.status(500).json({ reply: "Internal Server Error" });
     }
 }
