@@ -7,11 +7,10 @@ Discover it and make it your own!
 This is the content of README.md
 1. Purpose of the project
 2. Explanation of the code structure
-3. Overview of the architecture
-4. Getting started
-5. Main characteristics of the project
-6. Community and contribution practices
-7. Practices, techniques, methods, and technologies used
+3. Getting started
+4. Main characteristics of the project
+5. Community and contribution practices
+6. Licence
 
 
 ## 🧭 Purpose of the project
@@ -43,20 +42,30 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## 🎖️ Main characteristics of the project
-As mentioned above, this projects uses LLMs. To do this, we use Ollama with the Mistral model. This model can of course be changed if it no longer meets our requirements.
+As mentioned above, this project uses LLMs. To do this, we use Ollama with the Mistral model. This model can of course be changed if it no longer meets our requirements.
 Another important point concerns the documentation : we focus on README and CONTRIBUTING files from open source projects on GitHub, but we can extend this to other types of documentation.
+The criteria used to verify the documentation is what we considered relevant for this type of documentation based on the literature and our reflections on the subject. Nevertheless, all projects do not need all the criteria we proposed. 
+For a better understanding there are the criteria and what we expect to find in each one:
+- Purpose: the purpose of the project, the "What"
+- Getting started: how to run the project to be able to use it 
+- Main features: explaination of what the tool/ software can do and information about features, ...
+- Community: a link to the contributing file 
+- Licence: a link to the licence or an indication of the licence used. 
+That was for the README.md file. For the CONTIBUTING file, we have 
+- Code of conduct: a link to a code of conduct
+- How join the project: the step to set up the project
+- Steps to contribute: how contribute to the project for example by fixing a bug or contributing to the documentation, applied to your project.
+- Tasks for newcomers: a list of the easy tasks for the first contribution or an explaination of how to find these tasks. 
+- How to submit a change: instructions about pull request, commit, ... for the structure and when submit. 
+It's always nice to have a section at the end about the community's communication channels.
 
 ## 👥 Community and contribution practices
 The administrators of this project is Louise Delpierre (for the moment).
 Any contribution is welcome if it is made with respect and a desire to help, rather than to judge and criticise.
 If you want to contribute by improving or adding something to this project, please go check [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md). <!-- il faut mettre un lien correct (celui du main)>
 
-## ✒️ Practices, techniques, methods, and technologies used
-Currently, I don't know what to say about practice, techniques, methods, and so on. However, I can say this : make the best we can, the smallest change is a change and a great start to begin. Document what you make for you and for others so try to explain like you have to explain to a child of 7 year 😉.
-About the technologies used here, we use the framework "Next.js" and we also use SQLite for the database. The languages are :
-- javascript (typescript)
-- css (manually so no framework)
-
+## Licence 
+This project is under the MIT Licence. 
 
 
 <!--## Deploy on Vercel

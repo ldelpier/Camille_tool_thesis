@@ -7,15 +7,13 @@ The Camille project welcomes all contributions from anyone willing to work in go
 1. Code of Conduct
 2. Information about the code
 3. How to join the project
-4. Build your workplace
-5. Steps to Contribute
-6. Task for Newcomers
-7. How to submit a change
+4. Steps to Contribute
+5. Task for Newcomers
+6. How to submit a change
     - Pull Request
     - Reviewing pull requests
     - Labeler
-8. Repositories
-9. Talk to the community
+7. Talk to the community
 
 ## 🧑‍🤝‍🧑 Code of Conduct <!-- il faut mettre le lien correct (celui du main)>
 This project adheres to a [Code of Conduct](https://github.com/ldelpier/master_thesis/blob/front_back/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
@@ -95,10 +93,7 @@ A pull request allows a developer to notify members of their team that they have
 A template should be created to bring a bit of formality to the project and help developpers to write clear and usefull pull request.
 Each pull request made should be review by at least one other contributor. 
 ### 🖊️ Reviewing pull requests
-All contributors who review and provide feedback on Pull Requests have a responsibility to both the project and the individual making the contribution.
-Reviews and feedback must be helpful, insightful, and geared towards improving the contribution.
-If pull request is blocked, there will be an pedagogic and nice explanation so a simple no will be not accepted as a justification.
-Be open to having your mind changed. Be open to working with the contributor to make the pull request better.
+All contributors who review and provide feedback on Pull Requests have a responsibility to both the project and the individual making the contribution. Reviews and feedback must be helpful, insightful, and geared towards improving the contribution. If pull request is blocked, an explanation is provided so a no is not considered as a justification.
 
 Reviews that are dismissive or disrespectful of the contributor or any other reviewers are strictly counter to the Code of Conduct.
 When reviewing a pull request, the primary goals are for the codebase to improve and for the person submitting the request to succeed. Whatever happens, the submitters should come away from the experience feeling like their effort was not wasted or unappreciated especially when it come from a new contributor because they are an opporunity to grow the community. 
@@ -113,28 +108,17 @@ Focus first on the most significant aspects of the change :
 
 Then focus on relative performance, perfect grammar and so on. It is important but we need a list a priorities.
 
-When changes are necessary, request them, do not demand them, and do not assume that the submitter already knows how to add a test or run a benchmark. Specific performance optimization techniques, coding styles, and conventions change over time. The first impression you give to a new contributor never does. If your comments were addressed but were not folded automatically after new commits or if they proved to be mistaken, please, hide them with the appropriate reason to keep the conversation flow concise and relevant.
-Be aware of the person behind the code!
-
-If a pull request appears to be abandoned or stalled, it is polite to first check with the contributor to see
-if they intend to continue the work before checking if they would mind if you took it over.
-When doing so, it is courteous to give the original contributor credit for the work they started by using an Author: meta-data tag in the commit.
+If a pull request appears to be abandoned or stalled, it is polite to first check with the contributor to see if they intend to continue the work before checking if they would mind if you took it over.
+When doing so, it is courteous to give the original contributor credit for the work they started.
 
 Regarding the approval of changes, any administrator is authorized to approve any other contributor's work and collaborators are not permitted to approve their own pull requests.
 Collaborators indicate that they have reviewed and approve of the changes in a pull request either by using GitHub's Approval Workflow, which is preferred, or by leaving an LGTM ("Looks Good To Me") comment.
 When explicitly using the "Changes requested" component of the GitHub Approval Workflow, show empathy.
 That is, do not be rude or abrupt with your feedback and offer concrete suggestions for improvement, if possible. If you're not sure how a particular change can be improved, say so. When you have suggestd changes in the pull resquest, it is a good idea to follow up them. Make sure that your review is not vague, dismissive, or unconstructive. 
 
-Use Changes requested to block a pull request from landing. When doing so, explain why you believe the pull request should not land along with an explanation of what may be an acceptable alternative course, if any. If you are stuck for idea, try using the criteria above. 
-For the submitter : be patient, accept that there are different opinions, performance is not everything and try ! 
+Use Changes requested to block a pull request from landing. When doing so, explain why you believe the pull request should not land along with an explanation of what may be an acceptable alternative course, if any. If you are stuck for idea, try using the criteria above.  
 ### 🏷️ Labeler
 Once a template for pull request has been created, labels may appear to provide more structure and guidance for the pull request. 
-
-## 📁 Repositories
-At least three repositories should be described here: 
-- the one containing the source code
-- the one containing the documentation and templates
-- and finally the one with the gitHb action. 
 
 ## 🦜 Talk to the community
 For the moment, the community is composed of one person but I am sure that it will change and maybe a reddit or a discord will be created and a link to these chat channel will be added here. 
