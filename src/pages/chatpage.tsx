@@ -74,9 +74,23 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       setConversationId(data.conversationId);
     }
 
+    //Parser la réponse et la mettre en forme
+    let formattedContent = data.reply || "No response from AI.";
+
+    try {
+      const result = JSON.parse(data.reply);
+      const formattedOutput = Object.entries(result).map(([key, value]: any) => {
+        return `${key} ⇒ status: ${value.status}, 🔎: ${value.evidence ?? "null"}`;
+      });
+
+      formattedContent = formattedOutput.join("\n");
+    } catch(error){
+      console.error("Invalid JSON from AI", error);
+    }
+
     const aiMessage: Message = {
       role: "ai",
-      content: data.reply || "No response from AI.",
+      content: formattedContent,
     };
 
     setMessages((prev: Message[]) => {

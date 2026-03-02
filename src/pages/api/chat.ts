@@ -1,6 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../lib/db";
-
+// Config pour agrandir le timeout 
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '10mb',
+        },
+        responseLimit: false,
+        externalResolver: true,
+  },
+  maxDuration: 60,
+}
 // Formatage ddes données dans la conversation
 type Data = {
     reply: string;
