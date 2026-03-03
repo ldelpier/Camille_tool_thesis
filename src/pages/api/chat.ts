@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../lib/db";
-import { GoogleGenAI } from "@google/genai";
+import Groq from "groq-sdk";
 
 // Formatage ddes données dans la conversation
 type Data = {
@@ -127,7 +127,7 @@ function buildDocumentationPrompt(fileContent: string) { return `
 }
 
 // CLE API 
-const genAI = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY!,});
+const groqai = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     // Autoriser uniquement les requêtes POST
@@ -164,27 +164,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             return res.status(400).json({reply: "Please provide a valid GitHub URL to analyse."});
         }
 
-        // Appel à API Gemini
-        const prompt = `
-        SYSTEM INSTRUCTIONS:
-        ${systemPrompt}
-
-        USER DOCUMENT:
-        ${userPrompt}
-        `;
-
-        const response = await genAI.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: [prompt],
-            config: {
-                temperature: 0,
-                maxOutputTokens: 500,
-            },
+        // Appel à API Groq
+        const response = await groqai.chat.completions.create({
+            model: "llama-3.3-70b-versatile",
+            messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+            ],
+            temperature: 0,
+            max_completion_tokens: 1000,
         });
 
-        const aiReply = response.text;
+        const aiReply = response.choices[0]?.message?.content;
         if (!aiReply){
-            return res.status(500).json({reply: "Empty response from Gemini"});
+            return res.status(500).json({reply: "Empty response from Groq"});
         }
 
         let conversationId: number;
