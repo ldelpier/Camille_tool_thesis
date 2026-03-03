@@ -65,7 +65,7 @@ Any contribution is welcome if it is made with respect and a desire to help, rat
 If you want to contribute by improving or adding something to this project, please go check [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md). <!-- il faut mettre un lien correct (celui du main)>
 
 ## Licence 
-This project is under the MIT Licence. 
+This project is under the [MIT Licence](https://github.com/ldelpier/master_thesis/blob/front_back/LICENCE.txt). 
 
 
 <!--## Deploy on Vercel
