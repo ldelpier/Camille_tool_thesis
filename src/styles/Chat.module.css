@@ -70,7 +70,7 @@
 .aiMessage {
   align-self: flex-start;
   background: #c8c8c4;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 0.8rem;
   margin-bottom: 1rem;
   max-width: 80%;
@@ -104,6 +104,28 @@
     transform: scale(1.05);
 }
 
+/* Conteneur quick replies */
+.quickReplies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+/* Bouton quickReply */
+.quickRepliesButton {
+  background: none;
+  color: #26A300;
+  border: 0.09rem solid #26A300;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.quickRepliesButton:hover {
+  transform: scale(1.03);
+}
+
 /* Large screens 2560x1440 */
 @media (min-width: 2000px) {
   .sidebar {
@@ -127,6 +149,11 @@
 
   .inputArea input {
     font-size: 1.1rem;
+  }
+
+  .quickReplyButton {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
   }
 }
 

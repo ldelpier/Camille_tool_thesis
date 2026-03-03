@@ -1,8 +1,10 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { QuickReply } from "../data/quickRepliesData";
 
 export type Message = {
   role: "user" | "ai";
   content: string; 
+  quickReplies?: QuickReply[];
 };
 
 interface ConversationContextType {

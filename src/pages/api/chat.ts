@@ -203,6 +203,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (error?.status === 429) {
             return res.status(429).json({ reply: "Quota limit reached. Please try again tomorrow." });
         }
+        else if (error?.status === 413){
+            return res.status(413).json({ reply: "The message is too big, please reduce your message."});
+        }
         return res.status(500).json({ reply: "Internal Server Error" });
     }
 }

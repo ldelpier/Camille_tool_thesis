@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import styles from "../styles/Chat.module.css";
 import { useConversation, Message } from "../context/conversationContext";
 import LoadingBar from "../components/loadingBar";
+import { quickRepliesData, QuickReply } from "../data/quickRepliesData";
 
 // Avoir le message de la page d'acceuil
 type ChatPageProps = {
@@ -46,12 +47,30 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     }
   }, [firstMessage]);
 
+  // Recommendation faite main
+  const handlerQuickReply = (qr: QuickReply) => {
+    const entry = quickRepliesData[qr.target];
+    if (!entry) return;
+
+    const userMessage: Message = {
+      role: "user",
+      content: qr.label,
+    };
+
+    const recommendationMessage: Message = {
+      role: "ai",
+      content: entry.recommendation, 
+      quickReplies: [],
+    };
+
+    setMessages((prev: Message[]) => [...prev, userMessage, recommendationMessage]);
+  };
+
   // Fonction pour envoyer un message à l'API et recevoir la réponse de l'IA avec le message à envoyer, le premier message et des données supplémentaires
   const sendMessage = async (messageToSent?: string, isFirstMessage = false) => {
     setIsLoading(true);
     
     const text = messageToSent || input;
-    
     if (!text.trim()) return;
 
     if (!isFirstMessage) {
@@ -74,18 +93,28 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       setConversationId(data.conversationId);
     }
 
-    //Parser la réponse et la mettre en forme
+    //Parser la réponse, la mettre en forme ; détecter les missing points pour les quick replies
     let formattedContent = data.reply || "No response from AI.";
+    let quickReplies: QuickReply[] = [];
 
     try {
       const cleaned = data.reply.replace(/```json|```/g, "").trim();
       const result = JSON.parse(cleaned);
+
       const lines = Object.entries(result).map(([key, value]: any) => {
         const quote = value["🔎"] ? ` — 🔎 *"${value["🔎"]}"*` : "";
         return `- **${key.replace(/_/g, " ")}** : ${value.status}${quote}`;
       });
-
       formattedContent = lines.join("\n");
+
+      quickReplies = Object
+        .entries(result)
+        .filter(([key, value]: any) => value.status === "❌" && quickRepliesData[key])
+        .map(([key]: any) => ({
+          label: quickRepliesData[key].label, 
+          target: key,
+        }));
+
     } catch(error){
       console.error("Invalid JSON from AI", error);
     }
@@ -93,6 +122,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     const aiMessage: Message = {
       role: "ai",
       content: formattedContent,
+      quickReplies,
     };
 
     setMessages((prev: Message[]) => {
@@ -146,7 +176,18 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
           {messages.map((msg, index) => (
             <div key={index} className={msg.role === "user" ? styles.userMessage : styles.aiMessage}>
               {msg.role === "ai" ? (
+                <>
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  {msg.quickReplies && msg.quickReplies.length > 0 && (
+                    <div className={styles.quickReplies}>
+                      {msg.quickReplies.map((qr, i) => (
+                        <button key={i} className={styles.quickRepliesButton} onClick={() => handlerQuickReply(qr)}>
+                          {qr.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
                 ) : (
                   <p>{msg.content}</p>
                 )}
