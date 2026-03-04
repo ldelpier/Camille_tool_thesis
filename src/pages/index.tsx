@@ -52,7 +52,7 @@ export default function Home() {
         <div className={styles.inputSection}>
           <input
             type="text"
-            placeholder="Give your documentation"
+            placeholder="Please put here the URL of the file"
             className={styles.input}
             value={project}
             onChange={(e) => setProject(e.target.value)}
