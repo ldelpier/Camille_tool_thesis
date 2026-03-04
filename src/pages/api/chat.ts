@@ -66,15 +66,13 @@ function buildReadmePrompt(fileContent: string) { return `
     Check the document against the following criteria:
         1. Purpose of the project
         2. Getting started instructions (how to run or install the project)
-        3. Explanation of the code structure / Architecture
-        4. Main features of the project
-        5. Community and contribution practices
-        6. License information
+        3. Main features of the project
+        4. Community and contribution practices (link to the contributing file and community-related matters)
+        5. License information (indicate the link to it)
     Return the result in this exact JSON format:
     {
     "Purpose": { "status": "✅|❌", "🔎": "short quote or null" },
     "Getting_started": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Code_structure": { "status": "✅|❌", "🔎": "short quote or null" },
     "Main_features": { "status": "✅|❌", "🔎": "short quote or null" },
     "Community_contribution": { "status": "✅|❌", "🔎": "short quote or null" },
     "License": { "status": "✅|❌", "🔎": "short quote or null" }
@@ -88,17 +86,17 @@ function buildContributingPrompt(fileContent: string) { return `
     ${fileContent}
     """
     Check the document against the following criteria:
-        1. Steps to contribute (How to start)
-        2. Tasks suitable for newcomers (Good first issues, beginners)
+        1. Steps to contribute (How to contribute to the project, what can we do)
+        2. Tasks suitable for newcomers (where find good first issues, beginners-friendly task list)
         3. Explanation of how to submit a change (PR, commits, branches)
-        4. Information about the repository (Tech stack, setup, name of folder)
-        5. Code of conduct for contributors (Rules of behavior)
+        4. Information about the code (Tech stack, setup, the structure of the repository)
+        5. Code of conduct for contributors (Rules of behavior, indicate if there is a link to it)
     Return the result in this exact JSON format:
     {
     "Steps_to_contribute": { "status": "✅|❌", "🔎": "short quote or null" },
     "Tasks_for_newcomers": { "status": "✅|❌", "🔎": "short quote or null" },
     "Submit_change_explanation": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Repository_information": { "status": "✅|❌", "🔎": "short quote or null" },
+    "Code_information": { "status": "✅|❌", "🔎": "short quote or null" },
     "Code_of_conduct": { "status": "✅|❌", "🔎": "short quote or null" }
     }`;
 }

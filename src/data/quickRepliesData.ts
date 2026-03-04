@@ -21,6 +21,6 @@ export const quickRepliesData: Record<string, QuickReplyEntry> = {
     },
     Tasks_for_newcomers: {
         label: "🌱 Add newcomer-friendly tasks",
-        recommendation: "**Recommendation — Tasks for newcomers** \n\nThere is no mention of beginner-friendly issues. A process that explain how find 'easy' tasks or make a list directly in this CONTRIBUTING file. Try to be clear and precise because entering in a new project can be a bit confusing in the beginning\n\nExample:\n```\n- 🏷️ Use GitHub labels like `good first issue` and mention them in the CONTRIBUTING file.\n- 🔗 A link to onbaording document of the project.\n```",
+        recommendation: "**Recommendation — Tasks for newcomers** \n\nThere is no mention of beginner-friendly issues. A process that explain how find 'easy' tasks or make a list directly in this CONTRIBUTING file.\n Try to be clear and precise because entering in a new project can be a bit confusing in the beginning\n\nExample:\n```\n- 🏷️ Use GitHub labels like `good first issue` and mention them in the CONTRIBUTING file.\n- 🔗 A link to onbaording document of the project.\n```",
     },
 };
