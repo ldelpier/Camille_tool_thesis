@@ -101,29 +101,6 @@ function buildContributingPrompt(fileContent: string) { return `
     }`;
 }
 
-// User Prompt Document
-function buildDocumentationPrompt(fileContent: string) { return `
-    Here is the documentation file to analyze:
-    """
-    ${fileContent}
-    """
-    Check whether the document fulfills its intended purpose.
-    Criteria:
-        1. Clear explanation of its purpose
-        2. Instructions or guidelines are clearly written
-        3. Target audience is identifiable
-        4. Rules or conventions are explicitly defined (if applicable)
-        5. Examples or usage instructions are provided
-    Return the result in this exact JSON format:
-    {
-    "Purpose_explained": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Clear_instructions": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Target_audience": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Rules_defined": { "status": "✅|❌", "🔎": "short quote or null" },
-    "Examples_or_usage": { "status": "✅|❌", "🔎": "short quote or null" }
-    }`;
-}
-
 // CLE API 
 const groqai = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -153,10 +130,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             if (message.toLowerCase().includes("readme")) { 
                 userPrompt = buildReadmePrompt(fileContent);
-            } else if (message.toLowerCase().includes("contributing")) {
+            } else if(message.toLowerCase().includes("contributing")) {
                 userPrompt = buildContributingPrompt(fileContent);
-            } else {
-                userPrompt = buildDocumentationPrompt(fileContent);
             }
         } else {
             return res.status(400).json({reply: "Please provide a valid GitHub URL to analyse."});
