@@ -78,64 +78,100 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       setMessages((prev: Message[]) => [...prev, userMessage]);
     }
 
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: text, 
-        conversationId: conversationId || null,
-      }),
-    });
-
-    const data = await response.json();
-    // Récupère l'Id de la conversation renvoyé par l'API
-    if (data.conversationId && !conversationId) {
-      setConversationId(data.conversationId);
-    }
-
-    //Parser la réponse, la mettre en forme ; détecter les missing points pour les quick replies
-    let formattedContent = data.reply || "No response from AI.";
-    let quickReplies: QuickReply[] = [];
-
-    try {
-      const cleaned = data.reply.replace(/```json|```/g, "").trim();
-      const result = JSON.parse(cleaned);
-
-      const lines = Object.entries(result).map(([key, value]: any) => {
-        const quote = value["🔎"] ? ` — 🔎 *"${value["🔎"]}"*` : "";
-        return `- **${key.replace(/_/g, " ")}** : ${value.status}${quote}`;
+    const setErrorMessage = (content: string) => {
+      const errorMessage: Message = { role: "ai", content, quickReplies: [] };
+      setMessages((prev: Message[]) => {
+        if (isFirstMessage) {
+          return [{ role: "user", content: text }, errorMessage];
+        }
+        return [...prev, errorMessage];
       });
-      formattedContent = lines.join("\n");
-
-      quickReplies = Object
-        .entries(result)
-        .filter(([key, value]: any) => value.status === "❌" && quickRepliesData[key])
-        .map(([key]: any) => ({
-          label: quickRepliesData[key].label, 
-          target: key,
-        }));
-
-    } catch(error){
-      console.error("Invalid JSON from AI", error);
-    }
-
-    const aiMessage: Message = {
-      role: "ai",
-      content: formattedContent,
-      quickReplies,
     };
+    
+    try{
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: text, 
+          conversationId: conversationId || null,
+        }),
+      });
 
-    setMessages((prev: Message[]) => {
-      if (isFirstMessage){
-        return [
-          {role: "user", content: text}, 
-          aiMessage,
-        ];
+      const textResponse = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(textResponse);
+      } catch {
+        // La réponse n'est pas du JSON (erreur Next.js, timeout, etc.)
+        setErrorMessage("An error occurred, please try again.");
+        return;
       }
-      return [...prev, aiMessage];
-    });
-    setInput("");
-    setIsLoading(false);
+
+      // Gestion des erreurs 
+      if (!response.ok){
+        setErrorMessage(data.reply || "An error occured, please try again.");
+        return;
+      }
+
+      // Récupère l'Id de la conversation renvoyé par l'API
+      if (data.conversationId && !conversationId) {
+        setConversationId(data.conversationId);
+      }
+
+      //Parser la réponse, la mettre en forme ; détecter les missing points pour les quick replies
+      let formattedContent = data.reply || "No response from AI.";
+      let quickReplies: QuickReply[] = [];
+
+      try {
+        const cleaned = data.reply.replace(/```json|```/g, "").trim();
+        const result = JSON.parse(cleaned);
+
+        const lines = Object.entries(result).map(([key, value]: any) => {
+          const quote = value["🔎"] ? ` — 🔎 *"${value["🔎"]}"*` : "";
+          return `- **${key.replace(/_/g, " ")}** : ${value.status}${quote}`;
+        });
+        formattedContent = lines.join("\n");
+
+        quickReplies = Object
+          .entries(result)
+          .filter(([key, value]: any) => value.status === "❌" && quickRepliesData[key])
+          .map(([key]: any) => ({
+            label: quickRepliesData[key].label, 
+            target: key,
+          }));
+
+      } catch(error){
+        console.error("Invalid JSON from AI", error);
+      }
+
+      const aiMessage: Message = {
+        role: "ai",
+        content: formattedContent,
+        quickReplies,
+      };
+
+      setMessages((prev: Message[]) => {
+        if (isFirstMessage){
+          return [
+            {role: "user", content: text}, 
+            aiMessage,
+          ];
+        }
+        return [...prev, aiMessage];
+      });
+      setInput("");
+    } catch (error){
+      console.error("Network error:", error);
+      const errorMessage: Message = {
+        role: "ai",
+        content: "Network error, please check your connection.",
+        quickReplies: [],
+      };
+      setMessages((prev: Message[]) => [...prev, errorMessage]);
+    } finally{
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import styles from "@/styles/Home.module.css";
 
 // Pour l'optimisation du site 
@@ -70,24 +71,46 @@ export default function Home() {
         {/*Les critères à gauche et l'image bot à droite*/}
         <div className={styles.mainContent}>
           <div className={styles.criteriaSection}>
-            <h2 className={styles.sectionTitle}>Criteria</h2>
+            <h2 className={styles.sectionTitle}>Examples URL</h2>
             <ul className={styles.criteriaList}>
               <li>
                 <span className={styles.bullet}>○</span>
                 <span className={styles.criteriaText}>
-                  The README file should provide a description of the project's purpose
+                  <Link href={"https://github.com/godotengine/godot/blob/master/README.md"} style={{textDecoration: 'none'}}>
+                    Godot Engine's README
+                  </Link>
+                  {" "}
+                  https://github.com/godotengine/godot/blob/master/README.md
                 </span>
               </li>
               <li>
                 <span className={styles.bullet}>○</span>
                 <span className={styles.criteriaText}>
-                  The CONTRIBUTION file should include the guidelines for contributing to the project
+                  <Link href={"https://github.com/readest/readest/blob/main/README.md"} style={{textDecoration: 'none'}}>
+                    Readest's README
+                  </Link>
+                  {" "}
+                  https://github.com/readest/readest/blob/main/README.md
                 </span>
               </li>
               <li>
                 <span className={styles.bullet}>○</span>
                 <span className={styles.criteriaText}>
-                  The README file and the CONTRIBUTION file should be up to date with the latest changes in the project
+                  <Link href={"https://github.com/tensorflow/tensorflow/blob/master/CONTRIBUTING.md"} style={{textDecoration: 'none'}}>
+                    Tensorflow's CONTRIBUTING 
+                  </Link>
+                  {" "}
+                  https://github.com/tensorflow/tensorflow/blob/master/CONTRIBUTING.md
+                </span>
+              </li>
+              <li>
+                <span className={styles.bullet}>○</span>
+                <span className={styles.criteriaText}>
+                  <Link href={"https://github.com/nodejs/node/blob/main/CONTRIBUTING.md"} style={{textDecoration: 'none'}}>
+                    Node.js' CONTRIBUTING
+                  </Link>
+                  {" "}
+                  https://github.com/nodejs/node/blob/main/CONTRIBUTING.md
                 </span>
               </li>
             </ul>

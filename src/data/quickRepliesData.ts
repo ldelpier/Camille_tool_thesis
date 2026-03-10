@@ -14,6 +14,10 @@ export const quickRepliesData: Record<string, QuickReplyEntry> = {
         label: "✨ List the main features", 
         recommendation: "**Recommendation — Main features** \n\nYour README doesn't highlight the features of the project. Add a short features list so users quickly understand the value and what makes your project special.\nThis section explains the features that make your project unique and different from what already exists. \n\nExample:\n```\n*Features*\n- 🎆 Special technology that stands out from the ordinary\n- 💬 Chat interface with AI-powered feedback\n- 📊 Compliance report per criterion\n- ❓ Does a feature need an explanation to use it?\n```",
     },
+    Licence: {
+        label: "📜 Find your Licence", 
+        recommendation: "**Recommendation — Licence** \n\nYour project does not have a licence. Therefore, according to the defintion of open source, your project is not an open source project. Find the appropriate licence for your project and add it to your project.\nNot all licences serve the same purpose, so you need to find out which licence is right for your project. \n\nExample:\n```\n- MIT Licence\n- Apache 2.0\n- GNU GPL\n```",
+    },
     // Recommandation CONTRIBUTING
     Steps_to_contribute: {
         label: "🪜 Add contribution steps",

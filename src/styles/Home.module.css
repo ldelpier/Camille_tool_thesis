@@ -118,7 +118,6 @@
 .criteriaText {
   font-size: 1rem;
   line-height: 1.6rem;
-  color: #000;
   flex: 1;
   padding-top: 0.2rem;
 }
@@ -155,14 +154,14 @@
 
   .mainContent {
   display: grid;
-  grid-template-columns: 1.7fr 1fr;
+  grid-template-columns: 1.5fr 1fr;
   align-items: center;
   margin-top: 8rem;
   }
   
   .criteriaSection {
   margin-top: 2rem;
-  margin-left: 2rem;
+  margin-left: 8rem;
   }
 
   .criteriaText {

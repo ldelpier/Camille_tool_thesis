@@ -21,8 +21,17 @@ function convertToRawUrl(githubUrl: string): string {
         .replace("/blob/", "/");
 }
 
+const MAX_DOC_SIZE = 300_000;
+class AppError extends Error{
+    status: number; 
+    constructor(message: string, status: number){
+        super(message);
+        this.status = status;
+    }
+}
+
 // Fetch le contenu depuis GitHub
-async function fetchGitHubFileContent(githubUrl: string): Promise<string | null> {
+async function fetchGitHubFileContent(githubUrl: string, maxDocSize: number = MAX_DOC_SIZE): Promise<string | null> {
     try {
         const rawUrl = convertToRawUrl(githubUrl);
         const response = await fetch(rawUrl);
@@ -32,8 +41,26 @@ async function fetchGitHubFileContent(githubUrl: string): Promise<string | null>
             return null;
         }
 
-        return await response.text();
+        // Verification contenu size 
+        const contentLength = response.headers.get('content_length');
+        if (contentLength && parseInt(contentLength, 10) > maxDocSize){
+            throw new AppError("The file is too big, please reduce it.", 413);
+        }
+
+        const textResponse = await response.text();
+
+        // Seconde verification 
+        const actualSize = Buffer.byteLength(textResponse, 'utf-8');
+        if (actualSize > maxDocSize){
+           throw new AppError("The file is too big, please reduce it.", 413);
+        }
+
+        return textResponse;
+
     } catch (error) {
+        if (error instanceof AppError) {
+            throw error;
+        }
         console.error("Erreur fetch GitHub :", error);
         return null;
     }
