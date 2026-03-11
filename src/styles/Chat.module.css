@@ -126,6 +126,7 @@
   transform: scale(1.03);
 }
 
+/*Responsive*/
 /* Large screens 2560x1440 */
 @media (min-width: 2000px) {
   .sidebar {
@@ -156,4 +157,5 @@
     padding: 0.5rem 1rem;
   }
 }
+
 

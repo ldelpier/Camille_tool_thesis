@@ -238,7 +238,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
         <div className={styles.inputArea}>
           <input
             type="text"
-            placeholder="write your question here..."
+            placeholder="Put your URL here please ..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}

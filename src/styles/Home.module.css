@@ -150,7 +150,7 @@
   margin-left: 37rem;
   margin-right: 10rem;
   margin-bottom: 3rem;
-}
+  }
 
   .mainContent {
   display: grid;
@@ -170,6 +170,36 @@
 
   .explanationSection {
     padding-right: 0;
+  }
+}
+
+/*Smaller screen 766x730 */
+@media (max-width: 800px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    margin-bottom: 20%;
+  }
+
+  .inputSection {
+    width: 90%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 2rem;
+  }
+
+  .explanationSection {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-right: 0;
+  }
+
+  .criteriaSection {
+    margin-left: 0.5rem;
+  }
+
+  .titleHome {
+    font-size: 2rem;
+    letter-spacing: 0.3rem;
   }
 }
 
