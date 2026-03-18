@@ -231,7 +231,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
           ))}
           {/*Afficher la loadbar*/}
           {isLoading && <LoadingBar />}
-          {!isLoading && <p>{messages.length} messages affichés</p>}
+          {!isLoading && <p>{messages.length} messages displayed</p>}
         </div>
 
         {/*Zone d'écriture*/}
