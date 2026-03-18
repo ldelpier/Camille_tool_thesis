@@ -1,0 +1,76 @@
+/* Page historique */
+.historyArea {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Titre */
+.titleHisto {
+  font-size: 3rem;
+  color: #26A300;
+  text-align: center;
+  font-weight: normal;
+  letter-spacing: 0.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Bouton container */
+.buttoncontainerHisto {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 1.5rem;
+}
+/* Retour conversation */
+.chatButton {
+  background: none;
+  font-size: 1rem;
+  color: #26A300;
+  border: 0.1rem solid #26A300;
+  padding: 0.4rem;;
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  width: 9%;
+  align-items: center;
+}
+.chatButton:hover {
+  transform: scale(1.05);
+} 
+/* Bouton suppression */
+.deleteButton {
+  background: none;
+  font-size: 1rem;
+  color: #e53935;
+  border: 0.1rem solid #e53935;
+  padding: 0.4rem;
+  margin-left: 88%;
+  margin-bottom: 1.5rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 9%;
+  align-items: center;
+}
+.deleteButton:hover {
+   transform: scale(1.05);
+}
+
+/* Stockage conversation */
+.conversationItem {
+  border: 0.15rem solid #7fc365;
+  border-radius: 8px;
+  padding: 12px;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  margin-bottom: 12px;
+}

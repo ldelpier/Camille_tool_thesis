@@ -1,0 +1,161 @@
+/*Page chat */
+.containerChat {
+  display: flex;
+  height: 100vh;
+  background-color: #f5f5f0;
+  font-family: monospace;
+}
+
+/* Barre latérale */
+.sidebar {
+  width: 12.5rem;
+  background: #f5f5f0;
+  padding: 1rem;
+  transition: width 0.3s ease;
+  margin-left: 1rem;
+  border-right: 0.2rem solid #ddd;
+  overflow: hidden;
+}
+.closed {
+  width: 3.8rem;
+}
+.toggleBtn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.sidebarmenu button, .backButton{
+  background: none;
+  color: #26A300;
+  border: 0.09rem solid #26A300;
+  padding: 0.6rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  align-items: center;
+}
+.sidebarmenu button:hover {
+  transform: scale(1.05);
+}
+
+/* Zone conversation */
+.chatArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.messages {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+/* Message styles */
+.userMessage {
+  align-self: flex-end;
+  background: #7fc365;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+  max-width: 80%;
+}
+.aiMessage {
+  align-self: flex-start;
+  background: #c8c8c4;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+  max-width: 80%;
+  margin-left: 10%;
+}
+
+/* Input */
+.inputArea {
+  display: flex;
+  padding: 1rem;
+  background: #f5f5f0;
+  margin-bottom: 1rem;
+}
+.inputArea input {
+  flex: 1;
+  padding: 0.8rem;
+  border: 0.06rem solid #ccc;
+  border-radius: 0.4rem;
+  outline: none;
+}
+.inputArea button {
+  margin-left: 1rem;
+  padding: 0.8rem 1.2rem;
+  background: #26A300;
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+.inputArea button:hover {
+    transform: scale(1.05);
+}
+
+/* Conteneur quick replies */
+.quickReplies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+/* Bouton quickReply */
+.quickRepliesButton {
+  background: none;
+  color: #26A300;
+  border: 0.09rem solid #26A300;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.quickRepliesButton:hover {
+  transform: scale(1.03);
+}
+
+/*Responsive*/
+/* Large screens 2560x1440 */
+@media (min-width: 2000px) {
+  .sidebar {
+    width: 18.5rem;
+    overflow: hidden;
+  }
+  .closed {
+  width: 5rem;
+  }
+  .sidebarmenu button, .backButton {
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    width: 70%;
+    align-items: center;
+  }
+
+  .messages {
+    padding: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .inputArea input {
+    font-size: 1.1rem;
+  }
+
+  .quickReplyButton {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+
