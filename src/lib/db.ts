@@ -2,13 +2,20 @@ import Database from "better-sqlite3";
 import path from "path";
 import fs from "fs";
 
-// Vérifier si le fichier de base de données existe, sinon le créer
-const dbDir = path.join(process.cwd(), "src","data");
-const dbPath = path.join(dbDir, "conversations.db");
+//Utiliser /tmp sur Vercel
+const isVercel = process.env.VERCEL === '1';
+const dbPath = isVercel
+    ?'/tmp/conversations.db'
+    // Vérifier si le fichier de base de données existe, sinon le créer
+    : path.join(process.cwd(), "src", "data", "conversations.db");
 
-// Créer le dossier data s'il n'existe pas
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
+
+// Créer le dossier local si on est pas sur Vercel et qu'il n'existe pas
+if (!isVercel) {
+    const dbDir = path.join(process.cwd(), "src", "data");
+    if (!fs.existsSync(dbDir)){
+        fs.mkdirSync(dbDir, { recursive: true });
+    }
 }
 
 const db = new Database(dbPath);
