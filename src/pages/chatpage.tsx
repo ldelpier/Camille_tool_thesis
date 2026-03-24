@@ -61,6 +61,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
       role: "ai",
       content: entry.recommendation, 
       quickReplies: [],
+      isRecommendation: true,
     };
 
     setMessages((prev: Message[]) => [...prev, userMessage, recommendationMessage]);
@@ -178,7 +179,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
     <div className={styles.containerChat}>
       {/*Ce qui se trouve dans l'onglet*/}
       <Head>
-        <title>Camille-Chatbot</title>
+        <title>Camille-URLbot</title>
         <link rel="icon" href="/rabbitkiki.ico" />
       </Head>
 
@@ -213,6 +214,9 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
             <div key={index} className={msg.role === "user" ? styles.userMessage : styles.aiMessage}>
               {msg.role === "ai" ? (
                 <>
+                  <span className={styles.labelSource}>
+                    {msg.isRecommendation ?"✍️ Generate by Camille's designer" : "🤖 Generate by IA"}
+                  </span>
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
                   {msg.quickReplies && msg.quickReplies.length > 0 && (
                     <div className={styles.quickReplies}>
@@ -238,7 +242,7 @@ export default function ChatPage({ firstMessage }: ChatPageProps) {
         <div className={styles.inputArea}>
           <input
             type="text"
-            placeholder="Put your URL here please ..."
+            placeholder="Please enter the URL of your README/CONTRIBUTING file here"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}

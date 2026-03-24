@@ -86,11 +86,11 @@ export default function Home() {
               <li>
                 <span className={styles.bullet}>○</span>
                 <span className={styles.criteriaText}>
-                  <Link href={"https://github.com/readest/readest/blob/main/README.md"} style={{textDecoration: 'none'}}>
-                    Readest's README
+                  <Link href={"https://github.com/TEAMMATES/teammates/blob/master/README.md"} style={{textDecoration: 'none'}}>
+                    TEAMMATES' README
                   </Link>
                   {" "}
-                  https://github.com/readest/readest/blob/main/README.md
+                  https://github.com/TEAMMATES/teammates/blob/master/README.md
                 </span>
               </li>
               <li>

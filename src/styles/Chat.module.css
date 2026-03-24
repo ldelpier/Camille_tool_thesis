@@ -68,6 +68,7 @@
   max-width: 80%;
 }
 .aiMessage {
+  position: relative;
   align-self: flex-start;
   background: #c8c8c4;
   padding: 0.8rem 1.6rem;
@@ -106,6 +107,7 @@
 
 /* Conteneur quick replies */
 .quickReplies {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -124,6 +126,14 @@
 
 .quickRepliesButton:hover {
   transform: scale(1.03);
+}
+
+.labelSource {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.6rem;
+  font-size: 0.7rem;
+  color: #666;
 }
 
 /*Responsive*/
@@ -155,6 +165,30 @@
   .quickReplyButton {
     font-size: 1rem;
     padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 768px){
+    .aiMessage {
+    max-width: 80%;
+    margin-left: 2%;
+  }
+
+  .userMessage {
+    max-width: 80%;
+  }
+
+  .sidebar{
+    width: 3.8rem;
+    overflow: hidden;
+  }
+
+  .messages {
+    padding: 3rem;
+  }
+
+  .inputArea input {
+    font-size: 0.85rem;
   }
 }
 

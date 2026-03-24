@@ -5,6 +5,7 @@ export type Message = {
   role: "user" | "ai";
   content: string; 
   quickReplies?: QuickReply[];
+  isRecommendation?: boolean;
 };
 
 interface ConversationContextType {

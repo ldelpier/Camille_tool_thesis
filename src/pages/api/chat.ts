@@ -152,7 +152,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         if (githubUrl) {
             fileContent = await fetchGitHubFileContent(githubUrl);
             if (!fileContent) {
-                return res.status(400).json({ reply: "Unable to fetch the file from GitHub. Please check the URL and make sure the repository is public." });
+                return res.status(400).json({ reply: "Unable to fetch the file from GitHub. Please check the URL and make sure the repository is public and the URL is the URL of a README/CONTRIBUTING file." });
             }
 
             if (message.toLowerCase().includes("readme")) { 
@@ -161,7 +161,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 userPrompt = buildContributingPrompt(fileContent);
             }
         } else {
-            return res.status(400).json({reply: "Please provide a valid GitHub URL to analyse."});
+            return res.status(400).json({reply: "Please provide the URL of a valid GitHub README/CONTRIBUTING file for analysis."});
         }
 
         // Appel à API Groq
