@@ -1,6 +1,6 @@
 # 🐰 Camille
 ## 📽️ Overview
-Camille is a web site designed to help Open Source community. In this repository, you will find a tool that can help you write documentation for OS projects.
+Camille is a web site designed to help Open Source community. In this repository, you will find a tool that can help you identify the missing elements in onboarding documentation for OS projects.
 Discover it and make it your own!
 
 ## 📚 Content
@@ -24,10 +24,11 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
 
-The structure of the code is explained in the [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md).
+The structure of the code is explained in the [CONTRIBUTING.md](https://github.com/ldelpier/Camille_tool_thesis/blob/main/CONTRIBUTION.md).
 
 ## 🎬 Getting started
-First, run the development server:
+You can either run the development server or view the website:
+To run the development server:
 
 ```bash
 npm run dev
@@ -38,18 +39,20 @@ pnpm dev
 # or
 bun dev
 ```
-
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+To view the website:
+[Camille](https://camille-tool-thesis.vercel.app/)
+
 ## 🎖️ Main characteristics of the project
-As mentioned above, this project uses LLMs. To do this, we use Ollama with the Mistral model. This model can of course be changed if it no longer meets our requirements.
+As mentioned above, this project uses LLMs. To do this, we use Groq with the llama-3.3-70b-versatile model. This model can of course be changed if it no longer meets our requirements.
 Another important point concerns the documentation : we focus on README and CONTRIBUTING files from open source projects on GitHub, but we can extend this to other types of documentation.
 The criteria used to verify the documentation is what we considered relevant for this type of documentation based on the literature and our reflections on the subject. Nevertheless, all projects do not need all the criteria we proposed. 
 For a better understanding there are the criteria and what we expect to find in each one:
 - Purpose: the purpose of the project, the "What"
 - Getting started: how to run the project to be able to use it 
 - Main features: explaination of what the tool/ software can do and information about features, ...
-- Community: a link to the contributing file 
+- Community: a link to the contributing file or a introduction of the community members
 - Licence: a link to the licence or an indication of the licence used. 
 That was for the README.md file. For the CONTIBUTING file, we have 
 - Code of conduct: a link to a code of conduct
@@ -62,14 +65,12 @@ It's always nice to have a section at the end about the community's communicatio
 ## 👥 Community and contribution practices
 The administrators of this project is Louise Delpierre (for the moment).
 Any contribution is welcome if it is made with respect and a desire to help, rather than to judge and criticise.
-If you want to contribute by improving or adding something to this project, please go check [CONTRIBUTING.md](https://github.com/ldelpier/master_thesis/blob/front_back/CONTRIBUTION.md). <!-- il faut mettre un lien correct (celui du main)>
-
+If you want to contribute by improving or adding something to this project, please go check [CONTRIBUTING.md](https://github.com/ldelpier/Camille_tool_thesis/blob/main/CONTRIBUTION.md).
 ## Licence 
-This project is under the [MIT Licence](https://github.com/ldelpier/master_thesis/blob/front_back/LICENCE.txt). 
+This project is under the [MIT Licence](https://github.com/ldelpier/Camille_tool_thesis/blob/main/LICENCE.txt). 
 
 
-<!--## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.-->
+## Deploy on Vercel
+Our project is hosted on [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme), as this was the easiest way to deploy our Next.js tool.
+It is currently deployed on Vercel using Louise Delpierre's GitHub account.
+No configuration or action is required; in fact, the deployement takes place as soon as you commit to the project's main branch. 

@@ -8,6 +8,9 @@ The Camille project welcomes all contributions from anyone willing to work in go
 2. Information about the code
 3. How to join the project
 4. Steps to Contribute
+    - New idea 
+    - Fix a bug 
+    - Improve documentation
 5. Task for Newcomers
 6. How to submit a change
     - Pull Request
@@ -16,7 +19,7 @@ The Camille project welcomes all contributions from anyone willing to work in go
 7. Talk to the community
 
 ## 🧑‍🤝‍🧑 Code of Conduct <!-- il faut mettre le lien correct (celui du main)>
-This project adheres to a [Code of Conduct](https://github.com/ldelpier/master_thesis/blob/front_back/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
+This project adheres to a [Code of Conduct](https://github.com/ldelpier/Camille_tool_thesis/blob/main/CODE_OF_CONDUCT.md). By participating, you agree to uphold a welcoming, inclusive, and respectful environment.
 
 ## ℹ️ Information about the code 
 The project is organized into the following main directories:
@@ -45,7 +48,7 @@ This is the main source folder of the project. It contains four subdirectories:
     contains the global style of the application and the style of the index, chatpage, history pages.
 
 ## 🔄 How to join the project
-To join the project, there are some stepsto follow 
+To join the project, there are some steps to follow 
 1. Take information about the project by reading the README.md file in the seed of the project.
 2. Find a issue or a part of the project you want work on.
 3. Fork the project to make the change you want.
@@ -53,10 +56,8 @@ To join the project, there are some stepsto follow
 5. Commit your change with explicit name and a short description if need it to understand your changes.
 6. When your change is rock solid, make a pull request to add you change to the main project.
 That is it. You join our project, Welcome !
-For the moment it is all I can find for this "how to join the project"
 
 ## 🚀 Steps to Contribute
-is not the same thing than how to join ? 
 There are several way to make a contribution, you have a new idea of feature that you want to implement, you want to change something because there is a bug or you want to help in the non code part to be include in this amazing community of open source. 
 ### New idea 
 This is the steps to follow if you want to propose a new idea: 
@@ -78,8 +79,8 @@ This is steps to follow if you want to fix a bug:
 - Make a good documentation to make the project accessible to everyone.
 - Contribute by fixing typos, clarifying explanations, or adding useful examples.
 - Write it in an easy english
-- Make all this change in the right branch.
-- <!-- il faut mettre un lien si j'ai un template>
+- Make all this change in the right branch. 
+<!-- il faut mettre un lien si j'ai un template-->
 
 ## 👌 Task for news contributors
 There should be a list of task/issue that are "easy" and well documented for newcomers 
